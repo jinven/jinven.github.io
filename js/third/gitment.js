@@ -332,7 +332,7 @@ var gitment = new Gitment({
     // repo: config.hostname,
     oauth: {
         client_id: 'b086cb47e7458ee5c7ba',
-        client_secret: '069b4a8755c46625af6c5dec4859a3983ce204d8',
+        client_secret: '62c492e68fad5ccd2db61e0badf7326e9641a53f',
     },
     theme: myTheme,
 })
