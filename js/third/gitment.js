@@ -122,7 +122,7 @@ const myTheme = {
             } else {
                 if(error && error.message === 'Comments Not Initialized') {
                     errorBlock.innerText = '评论未初始化';
-                } else if(error && error.message === 'Error: Bad credentials') {
+                } else if(error && error.message === 'Bad credentials') {
                     errorBlock.innerText = '错误： 认证失败';
                 } else {
                     errorBlock.innerText = error;
