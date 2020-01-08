@@ -1,6 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://jinven.github.io/2019/12/29/vue-%E5%B0%8F%E7%BB%93/</loc>
+    <lastmod>2020-01-08</lastmod>
+  </url>  <url>
+    <loc>https://jinven.github.io/2020/01/08/javascript-%E5%B0%8F%E7%BB%93/</loc>
+    <lastmod>2020-01-08</lastmod>
+  </url>  <url>
+    <loc>https://jinven.github.io/2019/12/29/angular-%E5%B0%8F%E7%BB%93/</loc>
+    <lastmod>2020-01-08</lastmod>
+  </url>  <url>
+    <loc>https://jinven.github.io/2019/12/28/hexo-%E6%96%87%E7%AB%A0%E7%BC%96%E5%86%99/</loc>
+    <lastmod>2020-01-08</lastmod>
+  </url>  <url>
+    <loc>https://jinven.github.io/2020/01/08/nuxt-%E5%B0%8F%E7%BB%93/</loc>
+    <lastmod>2020-01-08</lastmod>
+  </url>  <url>
+    <loc>https://jinven.github.io/2019/12/29/scss/</loc>
+    <lastmod>2020-01-08</lastmod>
+  </url>  <url>
+    <loc>https://jinven.github.io/2019/12/29/react-%E5%B0%8F%E7%BB%93/</loc>
+    <lastmod>2020-01-08</lastmod>
+  </url>  <url>
+    <loc>https://jinven.github.io/2019/12/29/less/</loc>
+    <lastmod>2020-01-08</lastmod>
+  </url>  <url>
+    <loc>https://jinven.github.io/2020/01/08/next-%E5%B0%8F%E7%BB%93/</loc>
+    <lastmod>2020-01-08</lastmod>
+  </url>  <url>
     <loc>https://jinven.github.io/2019/12/29/linux-%E8%A7%A3%E5%8E%8B%E7%BC%A9/</loc>
     <lastmod>2020-01-04</lastmod>
   </url>  <url>
@@ -19,19 +46,19 @@
     <loc>https://jinven.github.io/2019/12/29/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B4%A2%E5%BC%95/</loc>
     <lastmod>2020-01-04</lastmod>
   </url>  <url>
-    <loc>https://jinven.github.io/2019/12/29/xml/</loc>
-    <lastmod>2020-01-04</lastmod>
-  </url>  <url>
     <loc>https://jinven.github.io/2019/12/29/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BA%8B%E5%8A%A1/</loc>
     <lastmod>2020-01-04</lastmod>
   </url>  <url>
-    <loc>https://jinven.github.io/2019/12/29/webpack/</loc>
+    <loc>https://jinven.github.io/2019/12/29/xml/</loc>
+    <lastmod>2020-01-04</lastmod>
+  </url>  <url>
+    <loc>https://jinven.github.io/2019/12/29/xml-XPath/</loc>
     <lastmod>2020-01-04</lastmod>
   </url>  <url>
     <loc>https://jinven.github.io/2019/12/29/xml-DTD/</loc>
     <lastmod>2020-01-04</lastmod>
   </url>  <url>
-    <loc>https://jinven.github.io/2019/12/29/xml-XPath/</loc>
+    <loc>https://jinven.github.io/2019/12/29/webpack/</loc>
     <lastmod>2020-01-04</lastmod>
   </url>  <url>
     <loc>https://jinven.github.io/2019/12/29/redis-%E9%9B%86%E7%BE%A4/</loc>
@@ -70,19 +97,19 @@
     <loc>https://jinven.github.io/2019/12/29/linux-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</loc>
     <lastmod>2020-01-04</lastmod>
   </url>  <url>
-    <loc>https://jinven.github.io/2019/12/29/linux-%E7%94%A8%E6%88%B7%E6%93%8D%E4%BD%9C/</loc>
+    <loc>https://jinven.github.io/2019/12/29/linux-%E7%9B%AE%E5%BD%95/</loc>
     <lastmod>2020-01-04</lastmod>
   </url>  <url>
-    <loc>https://jinven.github.io/2019/12/29/linux-%E7%9B%AE%E5%BD%95/</loc>
+    <loc>https://jinven.github.io/2019/12/29/linux-%E7%94%A8%E6%88%B7%E6%93%8D%E4%BD%9C/</loc>
     <lastmod>2020-01-04</lastmod>
   </url>  <url>
     <loc>https://jinven.github.io/2019/12/29/linux-%E7%BD%91%E7%BB%9C%E8%AE%BE%E7%BD%AE/</loc>
     <lastmod>2020-01-04</lastmod>
   </url>  <url>
-    <loc>https://jinven.github.io/2019/12/29/gulp/</loc>
+    <loc>https://jinven.github.io/2019/12/29/linux-ssh/</loc>
     <lastmod>2020-01-04</lastmod>
   </url>  <url>
-    <loc>https://jinven.github.io/2019/12/29/linux-ssh/</loc>
+    <loc>https://jinven.github.io/2019/12/29/gulp/</loc>
     <lastmod>2020-01-04</lastmod>
   </url>  <url>
     <loc>https://jinven.github.io/2019/12/29/elasticsearch-%E5%9F%BA%E6%9C%AC/</loc>
