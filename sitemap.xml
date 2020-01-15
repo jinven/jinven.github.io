@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://jinven.github.io/about/index.html</loc>
+    
+    <lastmod>2020-01-15T10:01:53.995Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://jinven.github.io/2019/12/01/angular-%E5%B0%8F%E7%BB%93/</loc>
     
     <lastmod>2020-01-15T09:57:30.477Z</lastmod>
@@ -355,13 +362,6 @@
     <loc>https://jinven.github.io/tags/index.html</loc>
     
     <lastmod>2020-01-13T00:57:48.003Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://jinven.github.io/about/index.html</loc>
-    
-    <lastmod>2020-01-11T09:01:21.563Z</lastmod>
     
   </url>
   
