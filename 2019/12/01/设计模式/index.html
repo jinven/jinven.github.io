@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <!-- 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.css">
+    <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js" async></script>
+  -->
+  <link rel="stylesheet" href="/css/third/pace-theme-minimal.css">
+  <script src="/js/third/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://jinven.github.io').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.6.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":true,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: 'TTEP1D8FD8',
+      apiKey: 'e4ce9422094b2c7623570a8ba17abd52',
+      indexName: 'jwindex',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"输入关键字","hits_empty":"没有找到与 ${query} 相关的内容","hits_stats":"${hits} 条记录，耗时 ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="概览 创建型模式，共五种：工厂方法模式、抽象工厂模式、单例模式、建造者模式、原型模式  结构型模式，共七种：适配器模式、装饰者模式、代理模式、外观模式、桥接模式、组合模式、享元模式。  行为型模式，共十一种：策略模式、模板方法模式、观察者模式、迭代子模式、责任链模式、命令模式、备忘录模式、状态模式、访问者模式、中介者模式、解释器模式。   还有两类：并发型模式和线程池模式。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="设计模式">
+<meta property="og:url" content="https://jinven.github.io/2019/12/01/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/index.html">
+<meta property="og:site_name" content="Jinwen">
+<meta property="og:description" content="概览 创建型模式，共五种：工厂方法模式、抽象工厂模式、单例模式、建造者模式、原型模式  结构型模式，共七种：适配器模式、装饰者模式、代理模式、外观模式、桥接模式、组合模式、享元模式。  行为型模式，共十一种：策略模式、模板方法模式、观察者模式、迭代子模式、责任链模式、命令模式、备忘录模式、状态模式、访问者模式、中介者模式、解释器模式。   还有两类：并发型模式和线程池模式。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-11-30T16:00:06.000Z">
+<meta property="article:modified_time" content="2020-01-15T08:37:21.867Z">
+<meta property="article:author" content="Jinwen">
+<meta property="article:tag" content="md">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://jinven.github.io/2019/12/01/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>设计模式 | Jinwen</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jinwen</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">20</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">50</span></a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-fw fa-sitemap"></i>站点地图</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input" id="search-input"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+  
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/jinven" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://jinven.github.io/2019/12/01/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jinwen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jinwen">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          设计模式
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-12-01 00:00:06" itemprop="dateCreated datePublished" datetime="2019-12-01T00:00:06+08:00">2019-12-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-01-15 16:37:21" itemprop="dateModified" datetime="2020-01-15T16:37:21+08:00">2020-01-15</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="概览"><a href="#概览" class="headerlink" title="概览"></a>概览</h1><ol>
+<li><p>创建型模式，共五种：工厂方法模式、抽象工厂模式、单例模式、建造者模式、原型模式</p>
+</li>
+<li><p>结构型模式，共七种：适配器模式、装饰者模式、代理模式、外观模式、桥接模式、组合模式、享元模式。</p>
+</li>
+<li><p>行为型模式，共十一种：策略模式、模板方法模式、观察者模式、迭代子模式、责任链模式、命令模式、备忘录模式、状态模式、访问者模式、中介者模式、解释器模式。</p>
+</li>
+</ol>
+<p>还有两类：并发型模式和线程池模式。</p>
+<a id="more"></a>
+
+<h1 id="原则：六大原则"><a href="#原则：六大原则" class="headerlink" title="原则：六大原则"></a>原则：六大原则</h1><p>总原则－开闭原则</p>
+<p>对扩展开放，对修改封闭。在程序需要进行拓展的时候，不能去修改原有的代码，而是要扩展原有代码，实现一个热插拔的效果。所以一句话概括就是：为了使程序的扩展性好，易于维护和升级。<br>想要达到这样的效果，需要使用接口和抽象类等。</p>
+<ol>
+<li>单一职责原则</li>
+</ol>
+<p>不要存在多于一个导致类变更的原因，也就是说每个类应该实现单一的职责，否则就应该把类拆分。</p>
+<ol start="2">
+<li>里氏替换原则（Liskov Substitution Principle）</li>
+</ol>
+<p>任何基类可以出现的地方，子类一定可以出现。里氏替换原则是继承复用的基石，只有当衍生类可以替换基类，软件单位的功能不受到影响时，基类才能真正被复用，而衍生类也能够在基类的基础上增加新的行为。<br>里氏代换原则是对“开-闭”原则的补充。实现“开闭”原则的关键步骤就是抽象化。而基类与子类的继承关系就是抽象化的具体实现，所以里氏代换原则是对实现抽象化的具体步骤的规范。里氏替换原则中，子类对父类的方法尽量不要重写和重载。因为父类代表了定义好的结构，通过这个规范的接口与外界交互，子类不应该随便破坏它。</p>
+<ol start="3">
+<li>依赖倒转原则（Dependence Inversion Principle）</li>
+</ol>
+<p>面向接口编程，依赖于抽象而不依赖于具体。写代码时用到具体类时，不与具体类交互，而与具体类的上层接口交互。</p>
+<ol start="4">
+<li>接口隔离原则（Interface Segregation Principle）</li>
+</ol>
+<p>每个接口中不存在子类用不到却必须实现的方法，如果不然，就要将接口拆分。使用多个隔离的接口，比使用单个接口（多个接口方法集合到一个的接口）要好。</p>
+<ol start="5">
+<li>迪米特法则（最少知道原则）（Demeter Principle）</li>
+</ol>
+<p>一个类对自己依赖的类知道的越少越好。无论被依赖的类多么复杂，都应该将逻辑封装在方法的内部，通过public方法提供给外部。这样当被依赖的类变化时，才能最小的影响该类。</p>
+<p>最少知道原则的另一个表达方式是：只与直接的朋友通信。类之间只要有耦合关系，就叫朋友关系。耦合分为依赖、关联、聚合、组合等。我们称出现为成员变量、方法参数、方法返回值中的类为直接朋友。局部变量、临时变量则不是直接的朋友。我们要求陌生的类不要作为局部变量出现在类中。</p>
+<ol start="6">
+<li>合成复用原则（Composite Reuse Principle）</li>
+</ol>
+<p>尽量首先使用合成/聚合的方式，而不是使用继承。</p>
+<h1 id="创建型模式"><a href="#创建型模式" class="headerlink" title="创建型模式"></a>创建型模式</h1><ol>
+<li>工厂方法模式</li>
+</ol>
+<p>定义一个用于创建对象的接口，让子类决定实例化哪一个类，工厂方法使一个类的实例化延迟到其子类。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">IProduct</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">ProductMethod</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">IFactory</span></span>&#123;</span><br><span class="line">    <span class="function">IProduct <span class="title">CreateProduct</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line">class Product : IProduct&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">ProductMethod</span><span class="params">()</span></span>&#123;</span><br><span class="line">        Console.WriteLine(<span class="string">"Product"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">class Factory : IFactory&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> IProduct <span class="title">CreateProduct</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Product();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span><span class="params">(string[] args)</span></span>&#123;</span><br><span class="line">    IFactory factory = <span class="keyword">new</span> Factory();</span><br><span class="line">    IProduct product = factory.CreateProduct();</span><br><span class="line">    product.ProductMethod();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>抽象工厂模式</li>
+</ol>
+<p>为创建一组相关或相互依赖的对象提供一个接口，而且无需指定他们的具体类。<br>抽象工厂模式是工厂方法模式的升级版本，他用来创建一组相关或者相互依赖的对象。他与工厂方法模式的区别就在于，工厂方法模式针对的是一个产品等级结构；而抽象工厂模式则是针对的多个产品等级结构。在编程中，通常一个产品结构，表现为一个接口或者抽象类，也就是说，工厂方法模式提供的所有产品都是衍生自同一个接口或抽象类，而抽象工厂模式所提供的产品则是衍生自不同的接口或抽象类。</p>
+<p>在抽象工厂模式中，有一个产品族的概念：</p>
+<p>所谓的产品族，是指位于不同产品等级结构中功能相关联的产品组成的家族。抽象工厂模式所提供的一系列产品就组成一个产品族；而工厂方法提供的一系列产品称为一个等级结构。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">IProduct1</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Show</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">IProduct2</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Show</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">IFactory2</span> </span>&#123;</span><br><span class="line">    <span class="function">IProduct1 <span class="title">CreateProduct1</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function">IProduct2 <span class="title">CreateProduct2</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line">class Product1 : IProduct1 &#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Show</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Console.WriteLine(<span class="string">"这是1型产品"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">class Product2 : IProduct2 &#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Show</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Console.WriteLine(<span class="string">"这是2型产品"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">class Factory2 : IFactory2 &#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> IProduct1 <span class="title">CreateProduct1</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Product1();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> IProduct2 <span class="title">CreateProduct2</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Product2();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    IFactory2 factory = <span class="keyword">new</span> Factory2();</span><br><span class="line">    factory.CreateProduct1().Show();</span><br><span class="line">    factory.CreateProduct2().Show();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>单例模式</li>
+</ol>
+<p>确保一个类只有一个实例，而且自行实例化并向整个系统提供这个实例<br>要素：</p>
+<ol>
+<li>私有的构造方法</li>
+<li>指向自己实例的私有静态引用</li>
+<li>以自己实例为返回值的静态的公有的方法</li>
+</ol>
+<p>根据实例化对象时机的不同分为两种：一种是饿汉式单例，一种是懒汉式单例。<br>饿汉式单例在单例类被加载时候，就实例化一个对象交给自己的引用：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> readonly Singleton singleton = <span class="keyword">new</span> Singleton();</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">GetInstance</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> singleton;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>懒汉式在调用取得实例方法的时候才会实例化对象；</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Singleton singleton;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(singleton==<span class="keyword">null</span>)&#123;</span><br><span class="line">            singleton = <span class="keyword">new</span> Singleton();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> singleton;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>优点：</p>
+<ol>
+<li>在内存中只有一个对象，节省内存空间。</li>
+<li>避免频繁的创建销毁对象，可以提高性能。</li>
+<li>避免对共享资源的多重占用。</li>
+<li>可以全局访问。</li>
+</ol>
+<ul>
+<li><ol start="4">
+<li><p>建造者模式</p>
+<p>将一个复杂对象的构建与它的表示分离，使得同样的构建过程可以创建不同的表示。</p>
+<p>四个要素</p>
+<ol>
+<li>产品类：一般是一个较为复杂的对象，也就是说创建对象的过程比较复杂，一般会有比较多的代码量。在本类图中，产品类是一个具体的类，而非抽象类。实际编程中，产品类可以是由一个抽象类与它的不同实现组成，也可以是由多个抽象类与他们的实现组成。</li>
+<li>抽象建造者：引入抽象建造者的目的，是为了将建造的具体过程交与它的子类来实现。这样更容易扩展。一般至少会有两个抽象方法，一个用来建造产品，一个是用来返回产品。</li>
+<li>建造者：实现抽象类的所有未实现的方法，具体来说一般是两项任务：组建产品；返回组建好的产品。</li>
+<li>导演类：负责调用适当的建造者来组建产品，导演类一般不与产品类发生依赖关系，与导演类直接交互的是建造者类。一般来说，导演类被用来封装程序中易变的部分。</li>
+</ol>
+<p>优点</p>
+<ol>
+<li>建造者模式的封装性很好。使用建造者模式可以有效的封装变化，在使用建造者模式的场景中，一般产品类和建造者类是比较稳定的，因此，将主要的业务逻辑封装在导演类中对整体而言可以取得比较好的稳定性。</li>
+<li>建造者模式很容易进行扩展。如果有新的需求，通过实现一个新的建造者类就可以完成，基本上不用修改之前已经测试通过的代码，因此也就不会对原有功能引入风险。</li>
+</ol>
+<p>建造者模式与工厂模式的区别</p>
+<p>   建造者模式与工厂模式是极为相似的，总体上，建造者模式仅仅只比工厂模式多了一个“导演类”的角色。在建造者模式的类图中，假如把这个导演类看做是最终调用的客户端，那么图中剩余的部分就可以看作是一个简单的工厂模式了。</p>
+<p>   与工厂模式相比，建造者模式一般用来创建更为复杂的对象，因为对象的创建过程更为复杂，因此将对象的创建过程独立出来组成一个新的类——导演类。也就是说，工厂模式是将对象的全部创建过程封装在工厂类中，由工厂类向客户端提供最终的产品；而建造者模式中，建造者类一般只提供产品类中各个组件的建造，而将具体建造过程交付给导演类。由导演类负责将各个组件按照特定的规则组建为产品，然后将组建好的产品交付给客户端。</p>
+</li>
+</ol>
+</li>
+</ul>
+<p>总结</p>
+<pre><code>建造者模式与工厂模式类似，他们都是建造者模式，适用的场景也很相似。一般来说，如果产品的建造很复杂，那么请用工厂模式；如果产品的建造更复杂，那么请用建造者模式。</code></pre><ul>
+<li><ol start="5">
+<li><p>原型模式</p>
+<p>用原型实例指定创建对象的种类，并通过拷贝这些原型创建新的对象。</p>
+<p>原型模式主要用于对象的复制，它的核心是就是类图中的原型类Prototype。Prototype类需要具备以下两个条件：</p>
+<p>实现Cloneable接口。在java语言有一个Cloneable接口，它的作用只有一个，就是在运行时通知虚拟机可以安全地在实现了此接口的类上使用clone方法。在java虚拟机中，只有实现了这个接口的类才可以被拷贝，否则在运行时会抛出CloneNotSupportedException异常。<br>重写Object类中的clone方法。Java中，所有类的父类都是Object类，Object类中有一个clone方法，作用是返回对象的一个拷贝，但是其作用域protected类型的，一般的类无法调用，因此，Prototype类需要将clone方法的作用域修改为public类型。<br>原型模式是一种比较简单的模式，也非常容易理解，实现一个接口，重写一个方法即完成了原型模式。在实际应用中，原型模式很少单独出现。经常与其他模式混用，他的原型类Prototype也常用抽象类来替代。</p>
+<p>   public class Prototype : Cloneable {</p>
+<pre><code>public Prototype clone(){
+    Prototype prototype = null;
+    try{
+        prototype = (Prototype)super.clone();
+    }catch(Exception e){
+    }
+    return prototype; 
+}</code></pre><p>   }</p>
+<p>   public class ConcretePrototype : Prototype{</p>
+<pre><code>public void show(){
+    Console.WriteLine(&quot;原型模式实现类&quot;);
+}</code></pre><p>   }</p>
+<p>   public static void Main(String[] args){</p>
+<pre><code>ConcretePrototype cp = new ConcretePrototype();
+for(int i=0; i&lt; 10; i++){
+    ConcretePrototype clonecp = (ConcretePrototype)cp.clone();
+    clonecp.show();
+}</code></pre><p>   }</p>
+<p>原型模式的优点及适用场景</p>
+<p>   使用原型模式创建对象比直接new一个对象在性能上要好的多，因为Object类的clone方法是一个本地方法，它直接操作内存中的二进制流，特别是复制大对象时，性能的差别非常明显。</p>
+<p>   使用原型模式的另一个好处是简化对象的创建，使得创建对象就像我们在编辑文档时的复制粘贴一样简单。</p>
+<p>   因为以上优点，所以在需要重复地创建相似对象时可以考虑使用原型模式。比如需要在一个循环体内创建对象，假如对象创建过程比较复杂或者循环次数很多的话，使用原型模式不但可以简化创建过程，而且可以使系统的整体性能提高很多。</p>
+<p>原型模式的注意事项</p>
+<p>   使用原型模式复制对象不会调用类的构造方法。因为对象的复制是通过调用Object类的clone方法来完成的，它直接在内存中复制数据，因此不会调用到类的构造方法。不但构造方法中的代码不会执行，甚至连访问权限都对原型模式无效。还记得单例模式吗？单例模式中，只要将构造方法的访问权限设置为private型，就可以实现单例。但是clone方法直接无视构造方法的权限，所以，单例模式与原型模式是冲突的，在使用时要特别注意。<br>   深拷贝与浅拷贝。Object类的clone方法只会拷贝对象中的基本的数据类型，对于数组、容器对象、引用对象等都不会拷贝，这就是浅拷贝。如果要实现深拷贝，必须将原型模式中的数组、容器对象、引用对象等另行拷贝。</p>
+</li>
+</ol>
+</li>
+</ul>
+<h2 id="结构型模式"><a href="#结构型模式" class="headerlink" title="结构型模式"></a>结构型模式</h2><ul>
+<li><ol>
+<li><p>适配器模式</p>
+<p>作为两个不兼容的接口之间的桥梁。这种类型的设计模式属于结构型模式，它结合了两个独立接口的功能。</p>
+<p>这种模式涉及到一个单一的类，该类负责加入独立的或不兼容的接口功能。举个真实的例子，读卡器是作为内存卡和笔记本之间的适配器。您将内存卡插入读卡器，再将读卡器插入笔记本，这样就可以通过笔记本来读取内存卡。</p>
+<p>我们通过下面的实例来演示适配器模式的使用。其中，音频播放器设备只能播放 mp3 文件，通过使用一个更高级的音频播放器来播放 vlc 和 mp4 文件。</p>
+<p>意图：将一个类的接口转换成客户希望的另外一个接口。适配器模式使得原本由于接口不兼容而不能一起工作的那些类可以一起工作。<br>主要解决：主要解决在软件系统中，常常要将一些”现存的对象”放到新的环境中，而新环境要求的接口是现对象不能满足的。<br>何时使用： 1、系统需要使用现有的类，而此类的接口不符合系统的需要。 2、想要建立一个可以重复使用的类，用于与一些彼此之间没有太大关联的一些类，包括一些可能在将来引进的类一起工作，这些源类不一定有一致的接口。 3、通过接口转换，将一个类插入另一个类系中。（比如老虎和飞禽，现在多了一个飞虎，在不增加实体的需求下，增加一个适配器，在里面包容一个虎对象，实现飞的接口。）<br>如何解决：继承或依赖（推荐）。<br>关键代码：适配器继承或依赖已有的对象，实现想要的目标接口。</p>
+<p>应用实例： </p>
+<p>   1、美国电器 110V，中国 220V，就要有一个适配器将 110V 转化为 220V。<br>   2、JAVA JDK 1.1 提供了 Enumeration 接口，而在 1.2 中提供了 Iterator 接口，想要使用 1.2 的 JDK，则要将以前系统的 Enumeration 接口转化为 Iterator 接口，这时就需要适配器模式。<br>   3、在 LINUX 上运行 WINDOWS 程序。<br>   4、JAVA 中的 jdbc。</p>
+<p>优点： </p>
+<p>   1、可以让任何两个没有关联的类一起运行。<br>   2、提高了类的复用。<br>   3、增加了类的透明度。 4、灵活性好。</p>
+<p>缺点： </p>
+<p>   1、过多地使用适配器，会让系统非常零乱，不易整体进行把握。比如，明明看到调用的是 A 接口，其实内部被适配成了 B 接口的实现，一个系统如果太多出现这种情况，无异于一场灾难。因此如果不是很有必要，可以不使用适配器，而是直接对系统进行重构。<br>   2.由于 JAVA 至多继承一个类，所以至多只能适配一个适配者类，而且目标类必须是抽象类。</p>
+<p>使用场景：有动机地修改一个正常运行的系统的接口，这时应该考虑使用适配器模式。</p>
+<p>步骤 1<br>为媒体播放器和更高级的媒体播放器创建接口。</p>
+<p>MediaPlayer.java</p>
+<p>   public interface MediaPlayer {</p>
+<pre><code>public void play(String audioType, String fileName);</code></pre><p>   }</p>
+<p>AdvancedMediaPlayer.java</p>
+<p>   public interface AdvancedMediaPlayer { </p>
+<pre><code>public void playVlc(String fileName);
+public void playMp4(String fileName);</code></pre><p>   }</p>
+<p>步骤 2<br>创建实现了 AdvancedMediaPlayer 接口的实体类。</p>
+<p>VlcPlayer.java</p>
+<p>   public class VlcPlayer implements AdvancedMediaPlayer{</p>
+<pre><code>@Override
+public void playVlc(String fileName) {
+    System.out.println(&quot;Playing vlc file. Name: &quot;+ fileName);      
+}
+
+@Override
+public void playMp4(String fileName) {
+    //什么也不做
+}</code></pre><p>   }</p>
+<p>Mp4Player.java</p>
+<p>   public class Mp4Player implements AdvancedMediaPlayer{</p>
+<pre><code>@Override
+public void playVlc(String fileName) {
+    //什么也不做
+}
+
+@Override
+public void playMp4(String fileName) {
+    System.out.println(&quot;Playing mp4 file. Name: &quot;+ fileName);      
+}</code></pre><p>   }</p>
+<p>步骤 3<br>创建实现了 MediaPlayer 接口的适配器类。</p>
+<p>MediaAdapter.java</p>
+<p>public class MediaAdapter implements MediaPlayer {<br>   AdvancedMediaPlayer advancedMusicPlayer;<br>   public MediaAdapter(String audioType){</p>
+<pre><code>if(audioType.equalsIgnoreCase(&quot;vlc&quot;) ){
+    advancedMusicPlayer = new VlcPlayer();       
+} else if (audioType.equalsIgnoreCase(&quot;mp4&quot;)){
+    advancedMusicPlayer = new Mp4Player();
+}  </code></pre><p>   }<br>   @Override<br>   public void play(String audioType, String fileName) {</p>
+<pre><code>if(audioType.equalsIgnoreCase(&quot;vlc&quot;)){
+    advancedMusicPlayer.playVlc(fileName);
+}else if(audioType.equalsIgnoreCase(&quot;mp4&quot;)){
+    advancedMusicPlayer.playMp4(fileName);
+}</code></pre><p>   }<br>}</p>
+<p>步骤 4<br>创建实现了 MediaPlayer 接口的实体类。</p>
+<p>AudioPlayer.java</p>
+<p>   public class AudioPlayer implements MediaPlayer {</p>
+<pre><code>MediaAdapter mediaAdapter; 
+
+@Override
+public void play(String audioType, String fileName) {    
+    //播放 mp3 音乐文件的内置支持
+    if(audioType.equalsIgnoreCase(&quot;mp3&quot;)){
+        System.out.println(&quot;Playing mp3 file. Name: &quot;+ fileName);         
+    } 
+    //mediaAdapter 提供了播放其他文件格式的支持
+    else if(audioType.equalsIgnoreCase(&quot;vlc&quot;) || audioType.equalsIgnoreCase(&quot;mp4&quot;)){
+        mediaAdapter = new MediaAdapter(audioType);
+        mediaAdapter.play(audioType, fileName);
+    }
+    else{
+        System.out.println(&quot;Invalid media. &quot;+audioType + &quot; format not supported&quot;);
+    }
+}   </code></pre><p>   }</p>
+<p>步骤 5<br>使用 AudioPlayer 来播放不同类型的音频格式。</p>
+<p>AdapterPatternDemo.java</p>
+<p>   public class AdapterPatternDemo {</p>
+<pre><code>public static void main(String[] args) {
+    AudioPlayer audioPlayer = new AudioPlayer();
+    audioPlayer.play(&quot;mp3&quot;, &quot;beyond the horizon.mp3&quot;);
+    audioPlayer.play(&quot;mp4&quot;, &quot;alone.mp4&quot;);
+    audioPlayer.play(&quot;vlc&quot;, &quot;far far away.vlc&quot;);
+    audioPlayer.play(&quot;avi&quot;, &quot;mind me.avi&quot;);
+}</code></pre><p>   }</p>
+<p>步骤 6<br>执行程序，输出结果：</p>
+<p>   Playing mp3 file. Name: beyond the horizon.mp3<br>   Playing mp4 file. Name: alone.mp4<br>   Playing vlc file. Name: far far away.vlc<br>   Invalid media. avi format not supported</p>
+</li>
+</ol>
+</li>
+<li><ol start="2">
+<li><p>装饰者模式</p>
+<p>Decorator模式（别名Wrapper）：动态将职责附加到对象上，若要扩展功能，装饰者提供了比继承更具弹性的代替方案。<br>意图：</p>
+<p>   动态地给一个对象添加一些额外的职责。就增加功能来说，Decorator模式相比生成子类更为灵活。</p>
+<p>设计原则：</p>
+<ol>
+<li>多用组合，少用继承。利用继承设计子类的行为，是在编译时静态决定的，而且所有的子类都会继承到相同的行为。然而，如果能够利用组合的做法扩展对象的行为，就可以在运行时动态地进行扩展。</li>
+<li>类应设计的对扩展开放，对修改关闭。</li>
+</ol>
+<p>要点：</p>
+<p>   1． 装饰者和被装饰对象有相同的超类型。<br>   2． 可以用一个或多个装饰者包装一个对象。<br>   3． 装饰者可以在所委托被装饰者的行为之前或之后，加上自己的行为，以达到特定的目的。<br>   4． 对象可以在任何时候被装饰，所以可以在运行时动态的，不限量的用你喜欢的装饰者来装饰对象。<br>   5． 装饰模式中使用继承的关键是想达到装饰者和被装饰对象的类型匹配，而不是获得其行为。<br>   6． 装饰者一般对组件的客户是透明的，除非客户程序依赖于组件的具体类型。在实际项目中可以根据需要为装饰者添加新的行为，做到“半透明”装饰者。<br>   7． 适配器模式的用意是改变对象的接口而不一定改变对象的性能，而装饰模式的用意是保持接口并增加对象的职责。</p>
+<p>Component：<br>定义一个对象接口，可以给这些对象动态地添加职责。</p>
+<p>   public interface Component {</p>
+<pre><code>void operation();</code></pre><p>   }</p>
+<p>Concrete Component：<br>定义一个对象，可以给这个对象添加一些职责。</p>
+<p>   public class ConcreteComponent implements Component{</p>
+<pre><code>public void operation() {
+    // Write your code here
+}</code></pre><p>   }</p>
+</li>
+</ol>
+</li>
+</ul>
+<pre><code>Decorator：
+
+维持一个指向Component对象的引用，并定义一个与 Component接口一致的接口。
+
+    public class Decorator implements Component {
+        public Decorator(Component component) {
+            this.component = component;
+        }
+        public void operation() {
+            component.operation();
+        }
+        private Component component;
+    }
+
+Concrete Decorator：
+在Concrete Component的行为之前或之后，加上自己的行为，以“贴上”附加的职责。
+
+    public class ConcreteDecorator extends Decorator {
+        public void operation() {
+            //addBehavior也可以在前面
+            super.operation();
+            addBehavior();
+        }
+        private void addBehavior() {
+            //your code
+        }
+    }
+
+适用性：以下情况使用Decorator模式
+
+    1. 需要扩展一个类的功能，或给一个类添加附加职责。
+    2. 需要动态的给一个对象添加功能，这些功能可以再动态的撤销。
+    3. 需要增加由一些基本功能的排列组合而产生的非常大量的功能，从而使继承关系变的不现实。
+    4. 当不能采用生成子类的方法进行扩充时。一种情况是，可能有大量独立的扩展，为支持每一种组合将产生大量的子类，使得子类数目呈爆炸性增长。另一种情况可能是因为类定义被隐藏，或类定义不能用于生成子类。
+
+优点：
+
+    1. Decorator模式与继承关系的目的都是要扩展对象的功能，但是Decorator可以提供比继承更多的灵活性。
+    2. 通过使用不同的具体装饰类以及这些装饰类的排列组合，设计师可以创造出很多不同行为的组合。
+
+缺点：
+
+    1. 这种比继承更加灵活机动的特性，也同时意味着更加多的复杂性。
+    2. 装饰模式会导致设计中出现许多小类，如果过度使用，会使程序变得很复杂。
+    3. 装饰模式是针对抽象组件（Component）类型编程。但是，如果你要针对具体组件编程时，就应该重新思考你的应用架构，以及装饰者是否合适。当然也可以改变Component接口，增加新的公开的行为，实现“半透明”的装饰者模式。在实际项目中要做出最佳选择。
+
+编写一个装饰者把所有的输入流内的大写字符转化成小写字符：
+
+    import java.io.FilterInputStream;
+    import java.io.IOException;
+    import java.io.InputStream;
+    public class LowerCaseInputStream extends FilterInputStream {
+        protected LowerCaseInputStream(InputStream in) {
+            super(in);
+        }
+        @Override
+        public int read() throws IOException {
+            int c = super.read();
+            return (c == -1 ? c : Character.toLowerCase((char) c));
+        }
+        @Override
+        public int read(byte[] b, int offset, int len) throws IOException {
+            int result = super.read(b, offset, len);
+            for (int i = offset; i &lt; offset + result; i++) {
+                b[i] = (byte) Character.toLowerCase((char) b[i]);
+            }
+            return result;
+        }
+    }
+
+测试我们的装饰者类：
+
+    import java.io.*;
+    public class InputTest {
+        public static void main(String[] args) throws IOException {
+            int c;
+            try {
+                InputStream in = new LowerCaseInputStream(new BufferedInputStream(new FileInputStream(&quot;D:\\test.txt&quot;)));
+                while ((c = in.read()) &gt;= 0) {
+                    System.out.print((char) c);
+                }
+                in.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }</code></pre><ul>
+<li><ol start="3">
+<li>代理模式</li>
+</ol>
+</li>
+<li><ol start="4">
+<li>外观模式</li>
+</ol>
+</li>
+<li><ol start="5">
+<li>桥接模式</li>
+</ol>
+</li>
+<li><ol start="6">
+<li>组合模式</li>
+</ol>
+</li>
+<li><ol start="7">
+<li>享元模式</li>
+</ol>
+</li>
+</ul>
+<h2 id="行为型模式"><a href="#行为型模式" class="headerlink" title="行为型模式"></a>行为型模式</h2><ul>
+<li><ol>
+<li>策略模式</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>模板方法模式</li>
+</ol>
+</li>
+<li><ol start="3">
+<li><p>观察者模式</p>
+<p>当对象间存在一对多关系时，则使用观察者模式（Observer Pattern）。比如，当一个对象被修改时，则会自动通知它的依赖对象。观察者模式属于行为型模式。</p>
+<p>意图：定义对象间的一种一对多的依赖关系，当一个对象的状态发生改变时，所有依赖于它的对象都得到通知并被自动更新。<br>主要解决：一个对象状态改变给其他对象通知的问题，而且要考虑到易用和低耦合，保证高度的协作。<br>何时使用：一个对象（目标对象）的状态发生改变，所有的依赖对象（观察者对象）都将得到通知，进行广播通知。<br>如何解决：使用面向对象技术，可以将这种依赖关系弱化。<br>关键代码：在抽象类里有一个 ArrayList 存放观察者们。<br>应用实例： 1、拍卖的时候，拍卖师观察最高标价，然后通知给其他竞价者竞价。 2、西游记里面悟空请求菩萨降服红孩儿，菩萨洒了一地水招来一个老乌龟，这个乌龟就是观察者，他观察菩萨洒水这个动作。</p>
+<p>优点：</p>
+<ol>
+<li>观察者和被观察者是抽象耦合的。</li>
+<li>建立一套触发机制。</li>
+</ol>
+<p>缺点：</p>
+<ol>
+<li>如果一个被观察者对象有很多的直接和间接的观察者的话，将所有的观察者都通知到会花费很多时间。</li>
+<li>如果在观察者和观察目标之间有循环依赖的话，观察目标会触发它们之间进行循环调用，可能导致系统崩溃。</li>
+<li>观察者模式没有相应的机制让观察者知道所观察的目标对象是怎么发生变化的，而仅仅只是知道观察目标发生了变化。</li>
+</ol>
+<p>使用场景：</p>
+<ol>
+<li>一个抽象模型有两个方面，其中一个方面依赖于另一个方面。将这些方面封装在独立的对象中使它们可以各自独立地改变和复用。</li>
+<li>一个对象的改变将导致其他一个或多个对象也发生改变，而不知道具体有多少对象将发生改变，可以降低对象之间的耦合度。</li>
+<li>一个对象必须通知其他对象，而并不知道这些对象是谁。</li>
+<li>需要在系统中创建一个触发链，A对象的行为将影响B对象，B对象的行为将影响C对象……，可以使用观察者模式创建一种链式触发机制。</li>
+</ol>
+<p>Subject.java</p>
+<p>   import java.util.ArrayList;<br>   import java.util.List;<br>   public class Subject {</p>
+<pre><code>private List&lt;Observer&gt; observers = new ArrayList&lt;Observer&gt;();
+private int state;
+public int getState() {
+    return state;
+}
+public void setState(int state) {
+    this.state = state;
+    notifyAllObservers();
+}
+public void attach(Observer observer){
+    observers.add(observer);      
+}
+public void notifyAllObservers(){
+    for (Observer observer : observers) {
+        observer.update();
+    }
+}  </code></pre><p>   }</p>
+<p>Observer.java</p>
+<p>   public abstract class Observer {</p>
+<pre><code>protected Subject subject;
+public abstract void update();</code></pre><p>   }</p>
+<p>创建实体观察者类<br>BinaryObserver.java</p>
+<p>   public class BinaryObserver extends Observer{</p>
+<pre><code>public BinaryObserver(Subject subject){
+    this.subject = subject;
+    this.subject.attach(this);
+}
+@Override
+public void update() {
+    System.out.println( &quot;Binary String: &quot; + Integer.toBinaryString( subject.getState() ) ); 
+}</code></pre><p>   }</p>
+<p>OctalObserver.java</p>
+<p>   public class OctalObserver extends Observer{</p>
+<pre><code>public OctalObserver(Subject subject){
+    this.subject = subject;
+    this.subject.attach(this);
+}
+@Override
+public void update() {
+    System.out.println( &quot;Octal String: &quot; + Integer.toOctalString( subject.getState() ) ); 
+}</code></pre><p>   }</p>
+<p>HexaObserver.java</p>
+<p>   public class HexaObserver extends Observer{</p>
+<pre><code>public HexaObserver(Subject subject){
+    this.subject = subject;
+    this.subject.attach(this);
+}
+@Override
+public void update() {
+    System.out.println( &quot;Hex String: &quot; + Integer.toHexString( subject.getState() ).toUpperCase() ); 
+}</code></pre><p>   }</p>
+<p>使用 Subject 和实体观察者对象</p>
+<p>ObserverPatternDemo.java</p>
+<p>   public class ObserverPatternDemo {</p>
+<pre><code>public static void main(String[] args) {
+    Subject subject = new Subject();
+    new HexaObserver(subject);
+    new OctalObserver(subject);
+    new BinaryObserver(subject);
+    System.out.println(&quot;First state change: 15&quot;);   
+    subject.setState(15);
+    System.out.println(&quot;Second state change: 10&quot;);  
+    subject.setState(10);
+}</code></pre><p>   }</p>
+<p>执行程序，输出结果：</p>
+<p>   First state change: 15<br>   Hex String: F<br>   Octal String: 17<br>   Binary String: 1111<br>   Second state change: 10<br>   Hex String: A<br>   Octal String: 12<br>   Binary String: 1010</p>
+</li>
+</ol>
+</li>
+<li><ol start="4">
+<li>迭代子模式</li>
+</ol>
+</li>
+<li><ol start="5">
+<li><p>责任链模式</p>
+<p>为请求创建了一个接收者对象的链。这种模式给予请求的类型，对请求的发送者和接收者进行解耦。这种类型的设计模式属于行为型模式。</p>
+<p>在这种模式中，通常每个接收者都包含对另一个接收者的引用。如果一个对象不能处理该请求，那么它会把相同的请求传给下一个接收者，依此类推。</p>
+<p>意图：避免请求发送者与接收者耦合在一起，让多个对象都有可能接收请求，将这些对象连接成一条链，并且沿着这条链传递请求，直到有对象处理它为止。</p>
+<p>主要解决：职责链上的处理者负责处理请求，客户只需要将请求发送到职责链上即可，无须关心请求的处理细节和请求的传递，所以职责链将请求的发送者和请求的处理者解耦了。</p>
+<p>何时使用：在处理消息的时候以过滤很多道。</p>
+<p>如何解决：拦截的类都实现统一接口。</p>
+<p>关键代码：Handler 里面聚合它自己，在 HandlerRequest 里判断是否合适，如果没达到条件则向下传递，向谁传递之前 set 进去。</p>
+<p>应用实例： 1、红楼梦中的”击鼓传花”。 2、JS 中的事件冒泡。 3、JAVA WEB 中 Apache Tomcat 对 Encoding 的处理，Struts2 的拦截器，jsp servlet 的 Filter。</p>
+<p>优点： 1、降低耦合度。它将请求的发送者和接收者解耦。 2、简化了对象。使得对象不需要知道链的结构。 3、增强给对象指派职责的灵活性。通过改变链内的成员或者调动它们的次序，允许动态地新增或者删除责任。 4、增加新的请求处理类很方便。</p>
+<p>缺点： 1、不能保证请求一定被接收。 2、系统性能将受到一定影响，而且在进行代码调试时不太方便，可能会造成循环调用。 3、可能不容易观察运行时的特征，有碍于除错。</p>
+<p>使用场景： 1、有多个对象可以处理同一个请求，具体哪个对象处理该请求由运行时刻自动确定。 2、在不明确指定接收者的情况下，向多个对象中的一个提交一个请求。 3、可动态指定一组对象处理请求。</p>
+<p>创建抽象的记录器类。<br>AbstractLogger.java</p>
+<p>   public abstract class AbstractLogger {</p>
+<pre><code>public static int INFO = 1;
+public static int DEBUG = 2;
+public static int ERROR = 3;
+
+protected int level;
+
+//责任链中的下一个元素
+protected AbstractLogger nextLogger;
+
+public void setNextLogger(AbstractLogger nextLogger){
+    this.nextLogger = nextLogger;
+}
+
+public void logMessage(int level, String message){
+    if(this.level &lt;= level){
+        write(message);
+    }
+    if(nextLogger !=null){
+        nextLogger.logMessage(level, message);
+    }
+}
+abstract protected void write(String message);</code></pre><p>   }</p>
+<p>创建扩展了该记录器类的实体类。<br>ConsoleLogger.java</p>
+<p>   public class ConsoleLogger extends AbstractLogger {</p>
+<pre><code>public ConsoleLogger(int level){
+    this.level = level;
+}
+
+@Override
+protected void write(String message) {    
+    System.out.println(&quot;Standard Console::Logger: &quot; + message);
+}</code></pre><p>   }</p>
+<p>ErrorLogger.java</p>
+<p>   public class ErrorLogger extends AbstractLogger {</p>
+<pre><code>public ErrorLogger(int level){
+    this.level = level;
+}
+
+@Override
+protected void write(String message) {    
+    System.out.println(&quot;Error Console::Logger: &quot; + message);
+}</code></pre><p>   }</p>
+<p>FileLogger.java</p>
+<p>   public class FileLogger extends AbstractLogger {</p>
+<pre><code>public FileLogger(int level){
+    this.level = level;
+}
+@Override
+protected void write(String message) {    
+    System.out.println(&quot;File::Logger: &quot; + message);
+}</code></pre><p>   }</p>
+<p>创建不同类型的记录器。赋予它们不同的错误级别，并在每个记录器中设置下一个记录器。每个记录器中的下一个记录器代表的是链的一部分。<br>ChainPatternDemo.java</p>
+<p>   public class ChainPatternDemo {</p>
+<pre><code>private static AbstractLogger getChainOfLoggers(){
+    AbstractLogger errorLogger = new ErrorLogger(AbstractLogger.ERROR);
+    AbstractLogger fileLogger = new FileLogger(AbstractLogger.DEBUG);
+    AbstractLogger consoleLogger = new ConsoleLogger(AbstractLogger.INFO);
+    errorLogger.setNextLogger(fileLogger);
+    fileLogger.setNextLogger(consoleLogger);
+    return errorLogger;  
+}
+public static void main(String[] args) {
+    AbstractLogger loggerChain = getChainOfLoggers();
+    loggerChain.logMessage(AbstractLogger.INFO, &quot;This is an information.&quot;);
+    loggerChain.logMessage(AbstractLogger.DEBUG, &quot;This is a debug level information.&quot;);
+    loggerChain.logMessage(AbstractLogger.ERROR, &quot;This is an error information.&quot;);
+}</code></pre><p>   }</p>
+<p>执行程序，输出结果：</p>
+<p>   Standard Console::Logger: This is an information.<br>   File::Logger: This is a debug level information.<br>   Standard Console::Logger: This is a debug level information.<br>   Error Console::Logger: This is an error information.<br>   File::Logger: This is an error information.<br>   Standard Console::Logger: This is an error information.</p>
+</li>
+</ol>
+</li>
+<li><ol start="6">
+<li>命令模式</li>
+</ol>
+</li>
+<li><ol start="7">
+<li>备忘录模式</li>
+</ol>
+</li>
+<li><ol start="8">
+<li>状态模式</li>
+</ol>
+</li>
+<li><ol start="9">
+<li>访问者模式</li>
+</ol>
+</li>
+<li><ol start="10">
+<li>中介者模式</li>
+</ol>
+</li>
+<li><ol start="11">
+<li>解释器模式</li>
+</ol>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="Jinwen 微信支付">
+        <p>微信支付</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/md/" rel="tag"><i class="fa fa-tag"></i> md</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/12/01/AMD%E3%80%81CommonJS/" rel="prev" title="AMD、CommonJS">
+      <i class="fa fa-chevron-left"></i> AMD、CommonJS
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/12/01/%E5%B8%B8%E7%94%A8%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/" rel="next" title="常用正则表达式">
+      常用正则表达式 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+    <div id="gitmentContainer"></div>
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <div class="night-mode">
+        <div class="toggle-mode">
+          <div class="icon" title="白天模式">
+            <i class="fa fa-sun-o" aria-hidden="true"></i>
+          </div>
+          <div class="toggle-switch">
+            <label class="switch" id="night-switch">
+              <input type="checkbox" id="switch-style">
+              <div class="slider round"></div>
+            </label>
+          </div>
+          <div class="icon" title="夜间模式">
+            <i class="fa fa-moon-o" aria-hidden="true"></i>
+          </div>
+        </div>
+      </div>
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概览"><span class="nav-number">1.</span> <span class="nav-text">概览</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#原则：六大原则"><span class="nav-number">2.</span> <span class="nav-text">原则：六大原则</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#创建型模式"><span class="nav-number">3.</span> <span class="nav-text">创建型模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#结构型模式"><span class="nav-number">3.1.</span> <span class="nav-text">结构型模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#行为型模式"><span class="nav-number">3.2.</span> <span class="nav-text">行为型模式</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jinwen</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/jinven" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;jinven" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:fujinwen@yahoo.com" title="E-Mail → mailto:fujinwen@yahoo.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jinwen</span>
+</div>
+<!--
+    <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+    <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+-->
+<link rel="stylesheet" href="/css/third/gitment.css">
+<script src="/js/third/gitment.browser.js"></script>
+<script src="/js/third/gitment.js"></script>
+
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.6.0
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        总访客量
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        总访问量
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+  <!-- _scripts/index.swig -->
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-nest@latest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  <!-- _third-party/index.swig -->
+  
+
+
+
+
+  
+<!-- 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/instantsearch.js@2/dist/instantsearch.min.css">
+    <script src="//cdn.jsdelivr.net/npm/instantsearch.js@2/dist/instantsearch.min.js" async></script>
+-->
+<link rel="stylesheet" href="/css/third/instantsearch.min.css">
+<script src="/js/third/instantsearch.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <!-- theme.pjax -->
+
+  <!-- _third-party/math/index.swig -->
+  
+
+  <!-- _third-party/quicklink.swig -->
+  
+
+
+  <!-- _third-party/bodyEnd.swig -->
+
+  <!-- theme.pjax -->
+  <!-- 
+    <canvas width="1366" height="662" style="position: fixed; left: 0px; top: 0px; z-index: 2147483647; pointer-events: none;"></canvas>
+  -->
+  <script src="/js/cursor-effects.js"></script>
+  <script>
+    // 设计模式
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?db1c134844bf26277860eaa90b796200";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+</body>
+</html>

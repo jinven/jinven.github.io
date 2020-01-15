@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <!-- 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.css">
+    <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js" async></script>
+  -->
+  <link rel="stylesheet" href="/css/third/pace-theme-minimal.css">
+  <script src="/js/third/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://jinven.github.io').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.6.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":true,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: 'TTEP1D8FD8',
+      apiKey: 'e4ce9422094b2c7623570a8ba17abd52',
+      indexName: 'jwindex',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"输入关键字","hits_empty":"没有找到与 ${query} 相关的内容","hits_stats":"${hits} 条记录，耗时 ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="123# protobufjs # https:&#x2F;&#x2F;github.com&#x2F;protobufjs&#x2F;protobuf.jsnpm install protobufjs --save   Protocol Buffer 演示页面： https:&#x2F;&#x2F;next-new.now.sh&#x2F;protobuf GraphiQL 演示页面：https:&#x2F;&#x2F;next-new.now.sh&#x2F;graphql">
+<meta property="og:type" content="article">
+<meta property="og:title" content="protobuf和graphql">
+<meta property="og:url" content="https://jinven.github.io/2019/12/01/protobuf%E5%92%8Cgraphql/index.html">
+<meta property="og:site_name" content="Jinwen">
+<meta property="og:description" content="123# protobufjs # https:&#x2F;&#x2F;github.com&#x2F;protobufjs&#x2F;protobuf.jsnpm install protobufjs --save   Protocol Buffer 演示页面： https:&#x2F;&#x2F;next-new.now.sh&#x2F;protobuf GraphiQL 演示页面：https:&#x2F;&#x2F;next-new.now.sh&#x2F;graphql">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-11-30T16:00:50.000Z">
+<meta property="article:modified_time" content="2020-01-15T08:49:09.277Z">
+<meta property="article:author" content="Jinwen">
+<meta property="article:tag" content="protobuf">
+<meta property="article:tag" content="graphql">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://jinven.github.io/2019/12/01/protobuf%E5%92%8Cgraphql/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>protobuf和graphql | Jinwen</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jinwen</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">20</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">50</span></a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-fw fa-sitemap"></i>站点地图</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input" id="search-input"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+  
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/jinven" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://jinven.github.io/2019/12/01/protobuf%E5%92%8Cgraphql/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jinwen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jinwen">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          protobuf和graphql
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-12-01 00:00:50" itemprop="dateCreated datePublished" datetime="2019-12-01T00:00:50+08:00">2019-12-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-01-15 16:49:09" itemprop="dateModified" datetime="2020-01-15T16:49:09+08:00">2020-01-15</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># protobufjs </span></span><br><span class="line"><span class="comment"># https://github.com/protobufjs/protobuf.js</span></span><br><span class="line">npm install protobufjs --save</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Protocol Buffer 演示页面： <a href="https://next-new.now.sh/protobuf" target="_blank" rel="noopener">https://next-new.now.sh/protobuf</a></li>
+<li>GraphiQL 演示页面：<a href="https://next-new.now.sh/graphql" target="_blank" rel="noopener">https://next-new.now.sh/graphql</a></li>
+</ul>
+<a id="more"></a>
+
+<h1 id="protobuf"><a href="#protobuf" class="headerlink" title="protobuf"></a>protobuf</h1><p><a href="https://github.com/jinven/next-demo/blob/master/pages/protobuf.js" target="_blank" rel="noopener">测试页面源码</a>、<a href="https://github.com/jinven/next-demo/blob/master/pages/api/protobuf.js" target="_blank" rel="noopener">测试接口源码</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 全库：19kb gzipped</span></span><br><span class="line"><span class="keyword">var</span> protobuf = <span class="built_in">require</span>(<span class="string">"protobufjs"</span>);</span><br><span class="line"><span class="comment">// 轻量库：16kb gzipped</span></span><br><span class="line"><span class="comment">// var protobuf = require("protobufjs/light");</span></span><br><span class="line"><span class="comment">// 最小库：6.5kb gzipped</span></span><br><span class="line"><span class="comment">// var protobuf = require("protobufjs/minimal");</span></span><br></pre></td></tr></table></figure>
+
+<p>Protocol Buffer 是谷歌开发的处理结构化数据的工具。</p>
+<p>是TensorFlow系统、gRPC框架中使用到的重要工具。</p>
+<p>如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">name: 张三</span><br><span class="line">id: 12345</span><br><span class="line">email: zhangsan@abc.com</span><br></pre></td></tr></table></figure>
+
+<p>就是一个结构化的数据，要将这些结构化的用户信息持久化或进行网络传输时，就需要先将他们序列化。</p>
+<p>就是变成数据流的格式，简单地说就是变为一个字符串。</p>
+<p>终端从序列化的数据流中还原出来的结构化数据，统称为处理结构化数据，这就是 Protocol Buffer 解决的主要问题。</p>
+<p>常用结构化处理类型有：XML 和 JSON，序列化后的字符串是可读的。</p>
+<p>不同的是，Protocol Buffer 序列化之后的数据不是可读的字符串，是二进制流。</p>
+<p>还原序列化之后的数据需要使用预先定义好的数据格式，数据格式文件一般保存在 .proto 文件中，每个 message 代表一类结构化的数据。</p>
+<p>如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">message user &#123;</span><br><span class="line">  optional string name &#x3D; 1;</span><br><span class="line">  required int32 id &#x3D; 2;</span><br><span class="line">  repeated string email 3;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>message 定义了每一个属性的类型和名字，类型可以是：</p>
+<ul>
+<li>布尔： <code>bool</code></li>
+<li>整数： <code>s-/u-/int32</code>、<code>s-/fixed32</code></li>
+<li>大整数： <code>s-/u-/int64</code>、s-/fixed64</li>
+<li>实数： <code>float</code>、<code>double</code></li>
+<li>字符串： <code>string</code></li>
+<li>数组： <code>bytes</code></li>
+<li>枚举： <code>enum</code></li>
+<li>消息对象： <code>message</code></li>
+</ul>
+<p><code>syntax = &quot;proto2&quot;</code> 属性的修饰符：</p>
+<ul>
+<li><code>required</code>: 必需的</li>
+<li><code>optional</code>: 可选的</li>
+<li><code>repeated</code>: 可重复的</li>
+</ul>
+<p><code>syntax = &quot;proto3&quot;</code> 只保留 repeated</p>
+<p><code>= 1</code>、<code>= 2</code>、<code>= 3</code> 代表属性的id</p>
+<p>有效消息有两种类型：</p>
+<ul>
+<li>消息实例</li>
+<li>plain javascript 对象</li>
+</ul>
+<h2 id="常用方法"><a href="#常用方法" class="headerlink" title="常用方法"></a>常用方法</h2><ul>
+<li><code>Message.verify(message: Object): null|string</code></li>
+</ul>
+<p>验证纯JavaScript对象是否满足有效消息的要求</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> payload = <span class="string">"invalid (not an object)"</span>;</span><br><span class="line"><span class="keyword">var</span> err = AwesomeMessage.verify(payload);</span><br><span class="line"><span class="keyword">if</span> (err)</span><br><span class="line">  <span class="keyword">throw</span> <span class="built_in">Error</span>(err);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>Message.encode(message: Message|Object [, writer: Writer]): Writer</code></li>
+</ul>
+<p>对消息实例或有效的普通JavaScript对象进行编码</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> buffer = AwesomeMessage.encode(message).finish();</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>Message.encodeDelimited(message: Message|Object [, writer: Writer]): Writer</code></li>
+</ul>
+<p>像Message.encode一样工作，但另外将消息的长度添加为varint。</p>
+<ul>
+<li><code>Message.decode(reader: Reader|Uint8Array): Message</code></li>
+</ul>
+<p>将缓冲区解码为消息实例</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">  <span class="keyword">var</span> decodedMessage = AwesomeMessage.decode(buffer);</span><br><span class="line">&#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">    <span class="keyword">if</span> (e <span class="keyword">instanceof</span> protobuf.util.ProtocolError) &#123;</span><br><span class="line">      <span class="comment">// e.instance holds the so far decoded message with missing required fields</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="comment">// wire format is invalid</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>Message.decodeDelimited(reader: Reader|Uint8Array): Message</code></li>
+</ul>
+<p>像Message.decode一样工作，但还读取以varint开头的消息的长度。</p>
+<ul>
+<li><code>Message.create(properties: Object): Message</code></li>
+</ul>
+<p>从一组满足有效消息要求的属性中创建一个新的消息实例。 </p>
+<p>如果适用，建议优先使用 <code>Message.create</code> 而不是 <code>Message.fromObject</code>，因为它不会执行可能的冗余转换。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> message = AwesomeMessage.create(&#123; <span class="attr">awesomeField</span>: <span class="string">"AwesomeString"</span> &#125;);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>Message.fromObject(object: Object): Message</code></li>
+</ul>
+<p>使用上表中概述的转换步骤，将任何无效的普通JavaScript对象转换为消息实例。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> message = AwesomeMessage.fromObject(&#123; <span class="attr">awesomeField</span>: <span class="number">42</span> &#125;);</span><br><span class="line"><span class="comment">// converts awesomeField to a string</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>Message.toObject(message: Message [, options: ConversionOptions]): Object</code></li>
+</ul>
+<p>将消息实例转换为任意纯JavaScript对象，以与其他库或存储实现互操作性。</p>
+<p>根据指定的实际转换选项，生成的普通JavaScript对象可能仍满足有效消息的要求，但大多数情况下不满足。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> object = AwesomeMessage.toObject(message, &#123;</span><br><span class="line">  enums: <span class="built_in">String</span>,  <span class="comment">// enums as string names</span></span><br><span class="line">  longs: <span class="built_in">String</span>,  <span class="comment">// longs as strings (requires long.js)</span></span><br><span class="line">  bytes: <span class="built_in">String</span>,  <span class="comment">// bytes as base64 encoded strings</span></span><br><span class="line">  defaults: <span class="literal">true</span>, <span class="comment">// includes default values</span></span><br><span class="line">  arrays: <span class="literal">true</span>,   <span class="comment">// populates empty arrays (repeated fields) even if defaults=false</span></span><br><span class="line">  objects: <span class="literal">true</span>,  <span class="comment">// populates empty objects (map fields) even if defaults=false</span></span><br><span class="line">  oneofs: <span class="literal">true</span>    <span class="comment">// includes virtual oneof fields set to the present field's name</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="官方示例"><a href="#官方示例" class="headerlink" title="官方示例"></a>官方示例</h2><h3 id="get-set"><a href="#get-set" class="headerlink" title="get/set"></a>get/set</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> protobuf = <span class="built_in">require</span>(<span class="string">"protobufjs"</span>);</span><br><span class="line"><span class="keyword">var</span> proto = <span class="string">"syntax=\"proto3\";\</span></span><br><span class="line"><span class="string">message MyMessage &#123;\</span></span><br><span class="line"><span class="string">  string some_field = 1;\</span></span><br><span class="line"><span class="string">&#125;"</span>;</span><br><span class="line"><span class="keyword">var</span> root = protobuf.parse(proto, &#123; <span class="attr">keepCase</span>: <span class="literal">true</span> &#125;).root;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">toCamelCase</span>(<span class="params">str</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> str.substring(<span class="number">0</span>,<span class="number">1</span>) + str.substring(<span class="number">1</span>).replace(<span class="regexp">/_([a-z])(?=[a-z]|$)/g</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$<span class="number">0</span>, $<span class="number">1</span></span>) </span>&#123; <span class="keyword">return</span> $<span class="number">1.</span>toUpperCase(); &#125;);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">addAliasProperty</span>(<span class="params">type, name, aliasName</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (aliasName !== name)</span><br><span class="line">    <span class="built_in">Object</span>.defineProperty(type.ctor.prototype, aliasName, &#123;</span><br><span class="line">      <span class="keyword">get</span>: function() &#123; <span class="keyword">return</span> <span class="keyword">this</span>[name]; &#125;,</span><br><span class="line">      <span class="keyword">set</span>: function(value) &#123; <span class="keyword">this</span>[name] = value; &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">addVirtualCamelcaseFields</span>(<span class="params">type</span>) </span>&#123;</span><br><span class="line">  type.fieldsArray.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">field</span>) </span>&#123;</span><br><span class="line">    addAliasProperty(type, field.name, toCamelCase(field.name));</span><br><span class="line">  &#125;);</span><br><span class="line">  type.oneofsArray.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">oneof</span>) </span>&#123;</span><br><span class="line">    addAliasProperty(type, oneof.name, toCamelCase(oneof.name));</span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">return</span> type;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> MyMessage = addVirtualCamelcaseFields(root.lookup(<span class="string">"MyMessage"</span>));</span><br><span class="line"><span class="keyword">var</span> myMessage = MyMessage.create(&#123;</span><br><span class="line">  some_field: <span class="string">"hello world"</span></span><br><span class="line">&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(</span><br><span class="line">  <span class="string">"someField:"</span>, myMessage.someField,</span><br><span class="line">  <span class="string">"\nsome_field:"</span>, myMessage.some_field,</span><br><span class="line">  <span class="string">"\nJSON:"</span>, <span class="built_in">JSON</span>.stringify(myMessage)</span><br><span class="line">);</span><br><span class="line"><span class="comment">// 输出</span></span><br><span class="line"><span class="comment">// someField: hello world</span></span><br><span class="line"><span class="comment">// some_field: hello world</span></span><br><span class="line"><span class="comment">// JSON: &#123;"some_field":"hello world"&#125;</span></span><br></pre></td></tr></table></figure>
+<h3 id="traverse-types"><a href="#traverse-types" class="headerlink" title="traverse-types"></a>traverse-types</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> protobuf = <span class="built_in">require</span>(<span class="string">"protobufjs"</span>);</span><br><span class="line"><span class="keyword">var</span> proto = <span class="string">"syntax=\"proto3\";\</span></span><br><span class="line"><span class="string">package example;\</span></span><br><span class="line"><span class="string">message Foo &#123;\</span></span><br><span class="line"><span class="string">  string a = 1;\</span></span><br><span class="line"><span class="string">&#125;\</span></span><br><span class="line"><span class="string">message Bar &#123;\</span></span><br><span class="line"><span class="string">  uint32 b = 1;\</span></span><br><span class="line"><span class="string">  \</span></span><br><span class="line"><span class="string">  message Inner &#123;\</span></span><br><span class="line"><span class="string">    bytes c = 1;\</span></span><br><span class="line"><span class="string">  &#125;\</span></span><br><span class="line"><span class="string">&#125;"</span>;</span><br><span class="line">protobuf.parse.filename = <span class="string">"traverse-types.proto"</span>;</span><br><span class="line"><span class="keyword">var</span> root = protobuf.parse(proto).root;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">traverseTypes</span>(<span class="params">current, fn</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (current <span class="keyword">instanceof</span> protobuf.Type) </span><br><span class="line">    fn(current);</span><br><span class="line">  <span class="keyword">if</span> (current.nestedArray)</span><br><span class="line">    current.nestedArray.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">nested</span>) </span>&#123;</span><br><span class="line">      traverseTypes(nested, fn);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line">traverseTypes(root, <span class="function"><span class="keyword">function</span>(<span class="params">type</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(</span><br><span class="line">    type.constructor.className + <span class="string">" "</span> + type.name</span><br><span class="line">    + <span class="string">"\n  fully qualified name: "</span> + type.fullName</span><br><span class="line">    + <span class="string">"\n  defined in: "</span> + type.filename</span><br><span class="line">    + <span class="string">"\n  parent: "</span> + type.parent + <span class="string">" in "</span> + type.parent.filename</span><br><span class="line">  );</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="streaming-rpc"><a href="#streaming-rpc" class="headerlink" title="streaming-rpc"></a>streaming-rpc</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> protobuf = <span class="built_in">require</span>(<span class="string">"protobufjs"</span>);</span><br><span class="line"><span class="keyword">var</span> root = protobuf.Root.fromJSON(&#123;</span><br><span class="line">  nested: &#123;</span><br><span class="line">    Greeter: &#123;</span><br><span class="line">      methods: &#123;</span><br><span class="line">        <span class="string">"SayHello"</span>: &#123;</span><br><span class="line">          requestType: <span class="string">"Hello"</span>,</span><br><span class="line">          requestStream: <span class="literal">true</span>,</span><br><span class="line">          responseType: <span class="string">"World"</span>,</span><br><span class="line">          responseStream: <span class="literal">true</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    Hello: &#123;</span><br><span class="line">      fields: &#123;</span><br><span class="line">        name: &#123;</span><br><span class="line">          type: <span class="string">"string"</span>,</span><br><span class="line">          id: <span class="number">1</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    World: &#123;</span><br><span class="line">      fields: &#123;</span><br><span class="line">        message: &#123;</span><br><span class="line">          type: <span class="string">"string"</span>,</span><br><span class="line">          id: <span class="number">1</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="keyword">var</span> Greeter = root.lookup(<span class="string">"Greeter"</span>),</span><br><span class="line">  Hello   = root.lookup(<span class="string">"Hello"</span>),</span><br><span class="line">  World   = root.lookup(<span class="string">"World"</span>);</span><br><span class="line"><span class="keyword">var</span> greeter = Greeter.create((<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> ended = <span class="literal">false</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">myRPCImpl</span>(<span class="params">method, requestData, callback</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (ended)</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">if</span> (!requestData) &#123;</span><br><span class="line">      ended = <span class="literal">true</span>;</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    performRequestOverTransportChannel(requestData, <span class="function"><span class="keyword">function</span>(<span class="params">responseData</span>) </span>&#123;</span><br><span class="line">      callback(<span class="literal">null</span>, responseData);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;)(), <span class="literal">true</span>, <span class="literal">true</span>);</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">performRequestOverTransportChannel</span>(<span class="params">requestData, callback</span>) </span>&#123;</span><br><span class="line">  setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> request = Hello.decodeDelimited(requestData);</span><br><span class="line">    <span class="keyword">var</span> response = &#123; <span class="attr">message</span>: <span class="string">"Hello "</span> + request.name &#125;;</span><br><span class="line">    setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      callback(World.encodeDelimited(response).finish());</span><br><span class="line">    &#125;, <span class="built_in">Math</span>.random() * <span class="number">250</span>);</span><br><span class="line">  &#125;, <span class="built_in">Math</span>.random() * <span class="number">250</span>);</span><br><span class="line">&#125;</span><br><span class="line">greeter.on(<span class="string">"data"</span>, <span class="function"><span class="keyword">function</span>(<span class="params">response, method</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"data in "</span> + method.name + <span class="string">":"</span>, response.message);</span><br><span class="line">&#125;);</span><br><span class="line">greeter.on(<span class="string">"end"</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"end"</span>);</span><br><span class="line">&#125;);</span><br><span class="line">greeter.on(<span class="string">"error"</span>, <span class="function"><span class="keyword">function</span>(<span class="params">err, method</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"error in "</span> + method.name + <span class="string">":"</span>, err);</span><br><span class="line">&#125;);</span><br><span class="line">greeter.sayHello(&#123; <span class="attr">name</span>: <span class="string">"one"</span> &#125;);</span><br><span class="line">greeter.sayHello(Hello.create(&#123; <span class="attr">name</span>: <span class="string">"two"</span> &#125;));</span><br><span class="line">greeter.on(<span class="string">"status"</span>, <span class="function"><span class="keyword">function</span>(<span class="params">code, text</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"custom status:"</span>, code, text);</span><br><span class="line">&#125;);</span><br><span class="line">greeter.emit(<span class="string">"status"</span>, <span class="number">200</span>, <span class="string">"OK"</span>);</span><br><span class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  greeter.end();</span><br><span class="line">  greeter.sayHello(&#123; <span class="attr">name</span>: <span class="string">"three"</span> &#125;, <span class="function"><span class="keyword">function</span>(<span class="params">err</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.error(<span class="string">"this should fail: "</span> + err.message);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;, <span class="number">501</span>);</span><br><span class="line"><span class="comment">// 输出</span></span><br><span class="line"><span class="comment">// custom status: 200 OK</span></span><br><span class="line"><span class="comment">// data in SayHello: Hello one</span></span><br><span class="line"><span class="comment">// data in SayHello: Hello two</span></span><br><span class="line"><span class="comment">// end</span></span><br><span class="line"><span class="comment">// this should fail: already ended</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="使用-proto-文件"><a href="#使用-proto-文件" class="headerlink" title="使用 .proto 文件"></a>使用 .proto 文件</h2><p>可以使用完整的库加载现有的 <code>.proto</code> 文件，该库分析并编译定义以准备使用（基于反射）消息类：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// awesome.proto</span></span><br><span class="line">package awesomepackage;</span><br><span class="line">syntax = <span class="string">"proto3"</span>;</span><br><span class="line">message AwesomeMessage &#123;</span><br><span class="line">  string awesome_field = <span class="number">1</span>; <span class="comment">// becomes awesomeField</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">protobuf.load(<span class="string">"awesome.proto"</span>, <span class="function"><span class="keyword">function</span>(<span class="params">err, root</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (err)</span><br><span class="line">    <span class="keyword">throw</span> err;</span><br><span class="line">  <span class="comment">// Obtain a message type</span></span><br><span class="line">  <span class="keyword">var</span> AwesomeMessage = root.lookupType(<span class="string">"awesomepackage.AwesomeMessage"</span>);</span><br><span class="line">  <span class="comment">// Exemplary payload</span></span><br><span class="line">  <span class="keyword">var</span> payload = &#123; <span class="attr">awesomeField</span>: <span class="string">"AwesomeString"</span> &#125;;</span><br><span class="line">  <span class="comment">// Verify the payload if necessary (i.e. when possibly incomplete or invalid)</span></span><br><span class="line">  <span class="keyword">var</span> errMsg = AwesomeMessage.verify(payload);</span><br><span class="line">  <span class="keyword">if</span> (errMsg)</span><br><span class="line">    <span class="keyword">throw</span> <span class="built_in">Error</span>(errMsg);</span><br><span class="line">  <span class="comment">// Create a new message</span></span><br><span class="line">  <span class="keyword">var</span> message = AwesomeMessage.create(payload); <span class="comment">// or use .fromObject if conversion is necessary</span></span><br><span class="line">  <span class="comment">// Encode a message to an Uint8Array (browser) or Buffer (node)</span></span><br><span class="line">  <span class="keyword">var</span> buffer = AwesomeMessage.encode(message).finish();</span><br><span class="line">  <span class="comment">// ... do something with buffer</span></span><br><span class="line">  <span class="comment">// Decode an Uint8Array (browser) or Buffer (node) to a message</span></span><br><span class="line">  <span class="keyword">var</span> message = AwesomeMessage.decode(buffer);</span><br><span class="line">  <span class="comment">// ... do something with message</span></span><br><span class="line">  <span class="comment">// If the application uses length-delimited buffers, there is also encodeDelimited and decodeDelimited.</span></span><br><span class="line">  <span class="comment">// Maybe convert the message back to a plain object</span></span><br><span class="line">  <span class="keyword">var</span> object = AwesomeMessage.toObject(message, &#123;</span><br><span class="line">    longs: <span class="built_in">String</span>,</span><br><span class="line">    enums: <span class="built_in">String</span>,</span><br><span class="line">    bytes: <span class="built_in">String</span>,</span><br><span class="line">    <span class="comment">// see ConversionOptions</span></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>可以使用 <code>promise</code> 语法</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">protobuf.load(<span class="string">"awesome.proto"</span>).then(<span class="function"><span class="keyword">function</span>(<span class="params">root</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="使用-JSON-描述符"><a href="#使用-JSON-描述符" class="headerlink" title="使用 JSON 描述符"></a>使用 JSON 描述符</h2><p>该库使用与.proto定义等效的JSON描述符。 例如，以下内容与上面的.proto定义相同：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// awesome.json</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">"nested"</span>: &#123;</span><br><span class="line">    <span class="attr">"AwesomeMessage"</span>: &#123;</span><br><span class="line">      <span class="attr">"fields"</span>: &#123;</span><br><span class="line">        <span class="attr">"awesomeField"</span>: &#123;</span><br><span class="line">          <span class="attr">"type"</span>: <span class="string">"string"</span>,</span><br><span class="line">          <span class="attr">"id"</span>: <span class="number">1</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>仅使用JSON描述符而不是.proto文件，可以仅使用light库（在这种情况下不需要解析器）。</p>
+<p>可以使用通常的方式加载JSON描述符：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">protobuf.load(<span class="string">"awesome.json"</span>, <span class="function"><span class="keyword">function</span>(<span class="params">err, root</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (err) <span class="keyword">throw</span> err;</span><br><span class="line">  <span class="comment">// Continue at "Obtain a message type" above</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>或者可以内联加载：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> jsonDescriptor = <span class="built_in">require</span>(<span class="string">"./awesome.json"</span>); <span class="comment">// exemplary for node</span></span><br><span class="line"><span class="keyword">var</span> root = protobuf.Root.fromJSON(jsonDescriptor);</span><br><span class="line"><span class="comment">// Continue at "Obtain a message type" above</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="仅使用反射"><a href="#仅使用反射" class="headerlink" title="仅使用反射"></a>仅使用反射</h2><p>完整库和light库均包含完整反射支持。</p>
+<p>例如，可以仅使用反射来定义在以上示例中看到的.proto定义：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="keyword">var</span> Root  = protobuf.Root,</span><br><span class="line">  Type  = protobuf.Type,</span><br><span class="line">  Field = protobuf.Field;</span><br><span class="line"><span class="keyword">var</span> AwesomeMessage = <span class="keyword">new</span> Type(<span class="string">"AwesomeMessage"</span>).add(<span class="keyword">new</span> Field(<span class="string">"awesomeField"</span>, <span class="number">1</span>, <span class="string">"string"</span>));</span><br><span class="line"><span class="keyword">var</span> root = <span class="keyword">new</span> Root().define(<span class="string">"awesomepackage"</span>).add(AwesomeMessage);</span><br><span class="line"><span class="comment">// Continue at "Create a new message" above</span></span><br><span class="line"><span class="comment">// ...</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="使用自定义类"><a href="#使用自定义类" class="headerlink" title="使用自定义类"></a>使用自定义类</h2><p>消息类还可以使用自定义功能进行扩展，还可以使用反射的消息类型注册自定义构造函数：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="comment">// Define a custom constructor</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">AwesomeMessage</span>(<span class="params">properties</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// custom initialization code</span></span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Register the custom constructor with its reflected type (*)</span></span><br><span class="line">root.lookupType(<span class="string">"awesomepackage.AwesomeMessage"</span>).ctor = AwesomeMessage;</span><br><span class="line"><span class="comment">// Define custom functionality</span></span><br><span class="line">AwesomeMessage.customStaticMethod = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; ... &#125;;</span><br><span class="line">AwesomeMessage.prototype.customInstanceMethod = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; ... &#125;;</span><br><span class="line"><span class="comment">// Continue at "Create a new message" above</span></span><br></pre></td></tr></table></figure>
+
+<p>（*）除了通过AwesomeMessage。</p>
+<p>$type 和 AwesomeMesage＃$type 引用其反射类型之外，各个自定义类还会自动填充：</p>
+<ul>
+<li>AwesomeMessage.create</li>
+<li>AwesomeMessage.encode 和 AwesomeMessage.encodeDelimited</li>
+<li>AwesomeMessage.decode 和 AwesomeMessage.decodeDelimited</li>
+<li>AwesomeMessage.verify</li>
+<li>AwesomeMessage.fromObject</li>
+<li>AwesomeMessage.toObject</li>
+<li>AwesomeMessage#toObject</li>
+<li>AwesomeMessage#toJSON</li>
+</ul>
+<p>然后，此类型的解码消息为AwesomeMessage的instance。</p>
+<p>另外，如果不需要自定义初始化代码，也可以重用和扩展内部构造函数：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="comment">// Reuse the internal constructor</span></span><br><span class="line"><span class="keyword">var</span> AwesomeMessage = root.lookupType(<span class="string">"awesomepackage.AwesomeMessage"</span>).ctor;</span><br><span class="line"><span class="comment">// Define custom functionality</span></span><br><span class="line">AwesomeMessage.customStaticMethod = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; ... &#125;;</span><br><span class="line">AwesomeMessage.prototype.customInstanceMethod = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; ... &#125;;</span><br><span class="line"><span class="comment">// Continue at "Create a new message" above</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="使用-services"><a href="#使用-services" class="headerlink" title="使用 services"></a>使用 services</h2><p>该库还支持使用服务，但不对实际的传输通道做任何假设。</p>
+<p>相反，用户必须提供合适的RPC实现，这是一个异步函数，它将反射的服务方法，二进制请求和节点样式的回调作为其参数：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">rpcImpl</span>(<span class="params">method, requestData, callback</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// perform the request using an HTTP request or a WebSocket for example</span></span><br><span class="line">  <span class="keyword">var</span> responseData = ...;</span><br><span class="line">  <span class="comment">// and call the callback with the binary response afterwards:</span></span><br><span class="line">  callback(<span class="literal">null</span>, responseData);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// greeter.proto</span></span><br><span class="line">syntax = <span class="string">"proto3"</span>;</span><br><span class="line">service Greeter &#123;</span><br><span class="line">  rpc SayHello (HelloRequest) returns (HelloReply) &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line">message HelloRequest &#123;</span><br><span class="line">  string name = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line">message HelloReply &#123;</span><br><span class="line">  string message = <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="keyword">var</span> Greeter = root.lookup(<span class="string">"Greeter"</span>);</span><br><span class="line"><span class="keyword">var</span> greeter = Greeter.create(<span class="comment">/* see above */</span> rpcImpl, <span class="comment">/* request delimited? */</span> <span class="literal">false</span>, <span class="comment">/* response delimited? */</span> <span class="literal">false</span>);</span><br><span class="line">greeter.sayHello(&#123; <span class="attr">name</span>: <span class="string">'you'</span> &#125;, <span class="function"><span class="keyword">function</span>(<span class="params">err, response</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'Greeting:'</span>, response.message);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>也支持 <code>promise</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">greeter.sayHello(&#123; <span class="attr">name</span>: <span class="string">'you'</span> &#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params">response</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'Greeting:'</span>, response.message);</span><br><span class="line">  &#125;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用-TypeScript"><a href="#使用-TypeScript" class="headerlink" title="使用 TypeScript"></a>使用 TypeScript</h2><p>该库附带了自己的<a href="https://github.com/dcodeIO/protobuf.js/blob/master/index.d.ts" target="_blank" rel="noopener">类型定义</a>，现代编辑器（如Visual Studio Code）将自动检测并使用它们来完成代码。</p>
+<p>npm包由于 <code>Buffer</code> 而依赖于 <a href="https://www.npmjs.com/package/@types/node" target="_blank" rel="noopener">@types/node</a>，而由于 <code>Long</code> 而依赖于 <a href="https://www.npmjs.com/package/@types/long" target="_blank" rel="noopener">@types/long</a>。</p>
+<p>如果不是为节点而构建和/或未使用long.js，则手动删除它们应该是安全的。</p>
+<h2 id="使用JS-API"><a href="#使用JS-API" class="headerlink" title="使用JS API"></a>使用JS API</h2><p>上面显示的API与TypeScript的工作原理几乎相同。</p>
+<p>但是，由于所有内容均已键入，因此访问动态生成的消息类的实例上的字段需要使用方括号（即<code>message[&quot;awesomeField&quot;]</code>）或显式强制转换。</p>
+<p>或者，可以使用为其静态副本生成的类型文件。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; load &#125; <span class="keyword">from</span> <span class="string">"protobufjs"</span>; <span class="comment">// respectively "./node_modules/protobufjs"</span></span><br><span class="line">load(<span class="string">"awesome.proto"</span>, <span class="function"><span class="keyword">function</span>(<span class="params">err, root</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (err)</span><br><span class="line">    <span class="keyword">throw</span> err;</span><br><span class="line">  <span class="comment">// example code</span></span><br><span class="line">  <span class="keyword">const</span> AwesomeMessage = root.lookupType(<span class="string">"awesomepackage.AwesomeMessage"</span>);</span><br><span class="line">  <span class="keyword">let</span> message = AwesomeMessage.create(&#123; <span class="attr">awesomeField</span>: <span class="string">"hello"</span> &#125;);</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`message = <span class="subst">$&#123;<span class="built_in">JSON</span>.stringify(message)&#125;</span>`</span>);</span><br><span class="line">  <span class="keyword">let</span> buffer = AwesomeMessage.encode(message).finish();</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`buffer = <span class="subst">$&#123;<span class="built_in">Array</span>.prototype.toString.call(buffer)&#125;</span>`</span>);</span><br><span class="line">  <span class="keyword">let</span> decoded = AwesomeMessage.decode(buffer);</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`decoded = <span class="subst">$&#123;<span class="built_in">JSON</span>.stringify(decoded)&#125;</span>`</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用生成的静态代码"><a href="#使用生成的静态代码" class="headerlink" title="使用生成的静态代码"></a>使用生成的静态代码</h2><p>如果使用CLI将静态代码生成为bundle.js，并将其类型定义生成为bundle.d.ts，则可以执行以下操作：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; AwesomeMessage &#125; <span class="keyword">from</span> <span class="string">"./bundle.js"</span>;</span><br><span class="line"><span class="comment">// example code</span></span><br><span class="line"><span class="keyword">let</span> message = AwesomeMessage.create(&#123; <span class="attr">awesomeField</span>: <span class="string">"hello"</span> &#125;);</span><br><span class="line"><span class="keyword">let</span> buffer  = AwesomeMessage.encode(message).finish();</span><br><span class="line"><span class="keyword">let</span> decoded = AwesomeMessage.decode(buffer);</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用装饰器"><a href="#使用装饰器" class="headerlink" title="使用装饰器"></a>使用装饰器</h2><p>该库还包括装饰器的早期实现。</p>
+<p>请注意，装饰器是TypeScript中的实验功能，并且声明顺序很重要，具体取决于JS目标。</p>
+<p>例如，<code>@Field.d(2,AwesomeArrayMessage)</code> 要求在定位ES5时已提前定义 AwesomeArrayMessage。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; Message, Type, Field, OneOf &#125; <span class="keyword">from</span> <span class="string">"protobufjs/light"</span>; <span class="comment">// respectively "./node_modules/protobufjs/light.js"</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AwesomeSubMessage <span class="keyword">extends</span> Message&lt;AwesomeSubMessage&gt; &#123;</span><br><span class="line">  <span class="meta">@Field</span>.d(<span class="number">1</span>, <span class="string">"string"</span>)</span><br><span class="line">  <span class="keyword">public</span> awesomeString: <span class="built_in">string</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">enum</span> AwesomeEnum &#123;</span><br><span class="line">  ONE = <span class="number">1</span>,</span><br><span class="line">  TWO = <span class="number">2</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">@Type</span>.d(<span class="string">"SuperAwesomeMessage"</span>)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AwesomeMessage <span class="keyword">extends</span> Message&lt;AwesomeMessage&gt; &#123;</span><br><span class="line">  <span class="meta">@Field</span>.d(<span class="number">1</span>, <span class="string">"string"</span>, <span class="string">"optional"</span>, <span class="string">"awesome default string"</span>)</span><br><span class="line">  <span class="keyword">public</span> awesomeField: <span class="built_in">string</span>;</span><br><span class="line">  <span class="meta">@Field</span>.d(<span class="number">2</span>, AwesomeSubMessage)</span><br><span class="line">  <span class="keyword">public</span> awesomeSubMessage: AwesomeSubMessage;</span><br><span class="line">  <span class="meta">@Field</span>.d(<span class="number">3</span>, AwesomeEnum, <span class="string">"optional"</span>, AwesomeEnum.ONE)</span><br><span class="line">  <span class="keyword">public</span> awesomeEnum: AwesomeEnum;</span><br><span class="line">  <span class="meta">@OneOf</span>.d(<span class="string">"awesomeSubMessage"</span>, <span class="string">"awesomeEnum"</span>)</span><br><span class="line">  <span class="keyword">public</span> which: <span class="built_in">string</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// example code</span></span><br><span class="line"><span class="keyword">let</span> message = <span class="keyword">new</span> AwesomeMessage(&#123; awesomeField: <span class="string">"hello"</span> &#125;);</span><br><span class="line"><span class="keyword">let</span> buffer  = AwesomeMessage.encode(message).finish();</span><br><span class="line"><span class="keyword">let</span> decoded = AwesomeMessage.decode(buffer);</span><br></pre></td></tr></table></figure>
+
+<p>支持的装饰器是：</p>
+<ul>
+<li><code>Type.d(typeName?: string)   (optional)</code></li>
+</ul>
+<p>将一个类注释为protobuf消息类型。 如果未指定typeName，则将构造函数的运行时函数名称用于反映的类型。</p>
+<ul>
+<li><code>Field.d&lt;T&gt;(fieldId: number, fieldType: string | Constructor&lt;T&gt;, fieldRule?: &quot;optional&quot; | &quot;required&quot; | &quot;repeated&quot;, defaultValue?: T)</code></li>
+</ul>
+<p>使用指定的id和protobuf类型将属性注释为protobuf字段。</p>
+<ul>
+<li><code>MapField.d&lt;T extends { [key: string]: any }&gt;(fieldId: number, fieldKeyType: string, fieldValueType. string | Constructor&lt;{}&gt;)</code></li>
+</ul>
+<p>使用指定的id，protobuf键和值类型将属性注释为protobuf映射字段。</p>
+<ul>
+<li><code>OneOf.d&lt;T extends string&gt;(...fieldNames: string[])</code></li>
+</ul>
+<p>annotates a property as a protobuf oneof covering the specified fields.</p>
+<h2 id="命令行"><a href="#命令行" class="headerlink" title="命令行"></a>命令行</h2><p>正式环境下使用编译后的json或js代码</p>
+<p>请注意，将CLI移至其<a href="https://github.com/dcodeIO/protobuf.js/blob/HEAD/cli" target="_blank" rel="noopener">自己的程序包</a>仍在进行中。</p>
+<p>目前，它仍然是主程序包的一部分。</p>
+<p>命令行界面（CLI）可用于在文件格式之间进行转换，并生成静态代码以及TypeScript定义。</p>
+<h3 id="pbjs-for-JavaScript"><a href="#pbjs-for-JavaScript" class="headerlink" title="pbjs for JavaScript"></a>pbjs for JavaScript</h3><p>用法： pbjs [选项] file1.proto file2.json …（或管道）其他 | pbjs [选项]</p>
+<ul>
+<li><code>-t，--target</code> 指定目标格式。还接受要求自定义目标的路径。</li>
+</ul>
+<p><code>json</code> JSON表示形式<br><code>json-module</code> JSON表示为模块<br><code>proto2</code> 协议缓冲区，版本2<br><code>proto3</code> 协议缓冲区，版本3<br><code>static</code> 无反射的静态代码（本身无法运行）<br><code>static-module</code> 静态代码，不作为模块反射</p>
+<ul>
+<li><p><code>-p，--path</code> 将目录添加到包含路径。</p>
+</li>
+<li><p><code>-o，--out</code> 保存到文件而不是写入stdout。</p>
+</li>
+</ul>
+<p><code>--sparse</code> 仅导出从主文件引用的那些类型（实验性）。</p>
+<p>仅模块目标：</p>
+<ul>
+<li><code>-w，--wrap</code> 指定要使用的包装器。还接受要求自定义包装的路径。</li>
+</ul>
+<p><code>default</code> 默认包装器，同时支持CommonJS和AMD<br><code>commonjs</code> CommonJS包装器<br><code>amd</code> AMD包装器<br><code>es6</code> ES6包装器（意味着–es6）<br><code>closure</code> 添加到protobuf.roots中的闭包，其中protobuf是全局的</p>
+<ul>
+<li><p><code>-r，--root</code> 指定备用protobuf.roots名称。</p>
+</li>
+<li><p><code>-l，--lint</code> Linter配置。默认为protobuf.js-compatible 规则：</p>
+</li>
+</ul>
+<p><code>eslint-disable</code> <code>block-scoped-var</code>，<code>no-re-declare</code>，<code>no-control-regex</code>，<code>no-prototype-builtins</code></p>
+<ul>
+<li><code>--es6</code> 启用ES6语法（用const / let代替var）</li>
+</ul>
+<p>仅原始来源：</p>
+<ul>
+<li><code>--keep-case</code> 保留现场大小写而不是转换为驼峰大小写。</li>
+</ul>
+<p>仅静态目标：</p>
+<p>-<code>--no-create</code> 不生成用于反射兼容性的创建函数。</p>
+<ul>
+<li><p><code>--no-encode</code> 不生成编码函数。</p>
+</li>
+<li><p><code>--no-decode</code> 不生成解码功能。</p>
+</li>
+<li><p><code>--no-verify</code> 不生成验证功能。</p>
+</li>
+<li><p><code>--no-convert</code> 不生成诸如from / toObject的转换函数</p>
+</li>
+<li><p><code>--no-delimited</code> 不生成定界的编码/解码函数。</p>
+</li>
+<li><p><code>--no-beautify</code> 不美化生成的代码。</p>
+</li>
+<li><p><code>--no-comments</code> 不输出任何JSDoc注释。</p>
+</li>
+<li><p><code>--force-long</code> 确保对s- / u- / int64和s- / fixed64字段使用’Long’。</p>
+</li>
+<li><p><code>--force-message</code> 确保使用消息实例而不是普通对象。</p>
+</li>
+</ul>
+<h2 id="生产环境"><a href="#生产环境" class="headerlink" title="生产环境"></a>生产环境</h2><p>两种方式：</p>
+<ol>
+<li>将所有.proto文件捆绑到一个.json文件中，这样可以最大程度地减少网络请求的数量，并避免任何解析器开销（提示：仅适用于light库）</li>
+<li>生成的 js 静态代码，仅适用于最小库（推荐）</li>
+</ol>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// package.json</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="attr">"scripts"</span>: &#123;</span><br><span class="line">    <span class="attr">"pbjs-json"</span>: <span class="string">"pbjs -t json file1.proto file2.proto &gt; bundle.json"</span>,</span><br><span class="line">    <span class="attr">"pbjs-js"</span>: <span class="string">"pbjs -t static-module -w commonjs -o compiled.js file1.proto file2.proto"</span>,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run pbjs</span><br></pre></td></tr></table></figure>
+
+<p>现在，将这个文件包含在最终捆绑包中：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// json</span></span><br><span class="line"><span class="keyword">var</span> root = protobuf.Root.fromJSON(<span class="built_in">require</span>(<span class="string">"./bundle.json"</span>));</span><br><span class="line"><span class="comment">// js</span></span><br><span class="line"><span class="keyword">import</span> root <span class="keyword">from</span> <span class="string">'./compiled'</span></span><br></pre></td></tr></table></figure>
+
+<p>或以通常的方式加载它：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// json</span></span><br><span class="line">protobuf.load(<span class="string">"bundle.json"</span>, <span class="function"><span class="keyword">function</span>(<span class="params">err, root</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// js</span></span><br><span class="line">root.包名称.消息名称.方法() <span class="comment">// create/encode/decode/toObject...</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="graphql"><a href="#graphql" class="headerlink" title="graphql"></a>graphql</h1><p><a href="https://github.com/jinven/next-demo/blob/master/pages/graphql.js" target="_blank" rel="noopener">测试页面源码</a>、<a href="https://github.com/jinven/next-demo/blob/master/pages/api/graphql.js" target="_blank" rel="noopener">测试接口Apollo源码</a>、<a href="https://github.com/jinven/next-demo/blob/master/pages/api/graphql/next.js" target="_blank" rel="noopener">测试接口Next源码</a></p>
+<p><a href="https://graphql.org/" target="_blank" rel="noopener">https://graphql.org/</a><br><a href="https://github.com/graphql/graphiql" target="_blank" rel="noopener">https://github.com/graphql/graphiql</a></p>
+<p>一种用于 API 的查询语言，满足数据查询的运行时。</p>
+<ul>
+<li>GraphQL 对 API 中的数据提供了一套易于理解的完整描述。</li>
+<li>向 API 发出一个 GraphQL 请求就能准确获得想要的数据，不多不少。</li>
+<li>只用一个请求。</li>
+<li>基于类型和字段的方式进行组织，而非入口端点。</li>
+<li>无需划分版本。</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 描述数据</span></span><br><span class="line">type Project &#123;</span><br><span class="line">  name: <span class="built_in">String</span></span><br><span class="line">  tagline: <span class="built_in">String</span></span><br><span class="line">  contributors: [User]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 请求所要的数据</span></span><br><span class="line">&#123;</span><br><span class="line">  project(name: <span class="string">"GraphQL"</span>) &#123;</span><br><span class="line">    tagline</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 得到可预测的结果</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"project"</span>: &#123;</span><br><span class="line">    <span class="string">"tagline"</span>: <span class="string">"A query language for APIs"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="服务端"><a href="#服务端" class="headerlink" title="服务端"></a>服务端</h2><ol>
+<li><a href="https://github.com/graphql/graphql-js/" target="_blank" rel="noopener">GraphQL.js</a></li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// hello.js</span></span><br><span class="line"><span class="keyword">var</span> &#123; graphql, buildSchema &#125; = <span class="built_in">require</span>(<span class="string">'graphql'</span>);</span><br><span class="line"><span class="keyword">var</span> schema = buildSchema(<span class="string">`</span></span><br><span class="line"><span class="string">  type Query &#123;</span></span><br><span class="line"><span class="string">    hello: String</span></span><br><span class="line"><span class="string">  &#125;</span></span><br><span class="line"><span class="string">`</span>);</span><br><span class="line"><span class="keyword">var</span> root = &#123; <span class="attr">hello</span>: <span class="function"><span class="params">()</span> =&gt;</span> <span class="string">'Hello world!'</span> &#125;;</span><br><span class="line">graphql(schema, <span class="string">'&#123; hello &#125;'</span>, root).then(<span class="function">(<span class="params">response</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(response);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install graphql</span><br><span class="line">node hello.js</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><a href="https://github.com/graphql/express-graphql" target="_blank" rel="noopener">express-graphql</a></li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// server.js</span></span><br><span class="line"><span class="keyword">var</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>);</span><br><span class="line"><span class="keyword">var</span> graphqlHTTP = <span class="built_in">require</span>(<span class="string">'express-graphql'</span>);</span><br><span class="line"><span class="keyword">var</span> &#123; buildSchema &#125; = <span class="built_in">require</span>(<span class="string">'graphql'</span>);</span><br><span class="line"><span class="keyword">var</span> schema = buildSchema(<span class="string">`</span></span><br><span class="line"><span class="string">  type Query &#123;</span></span><br><span class="line"><span class="string">    hello: String</span></span><br><span class="line"><span class="string">  &#125;</span></span><br><span class="line"><span class="string">`</span>);</span><br><span class="line"><span class="keyword">var</span> root = &#123; <span class="attr">hello</span>: <span class="function"><span class="params">()</span> =&gt;</span> <span class="string">'Hello world!'</span> &#125;;</span><br><span class="line"><span class="keyword">var</span> app = express();</span><br><span class="line">app.use(<span class="string">'/graphql'</span>, graphqlHTTP(&#123;</span><br><span class="line">  schema: schema,</span><br><span class="line">  rootValue: root,</span><br><span class="line">  graphiql: <span class="literal">true</span>,</span><br><span class="line">&#125;));</span><br><span class="line">app.listen(<span class="number">4000</span>, () =&gt; <span class="built_in">console</span>.log(<span class="string">'Now browse to localhost:4000/graphql'</span>));</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install express express-graphql graphql</span><br><span class="line">node server.js</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><a href="https://github.com/apollographql/apollo-server" target="_blank" rel="noopener">apollo-server</a></li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// server.js</span></span><br><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>);</span><br><span class="line"><span class="keyword">const</span> &#123; ApolloServer, gql &#125; = <span class="built_in">require</span>(<span class="string">'apollo-server-express'</span>);</span><br><span class="line"><span class="keyword">const</span> typeDefs = gql<span class="string">`</span></span><br><span class="line"><span class="string">  type Query &#123;</span></span><br><span class="line"><span class="string">    hello: String</span></span><br><span class="line"><span class="string">  &#125;</span></span><br><span class="line"><span class="string">`</span>;</span><br><span class="line"><span class="keyword">const</span> resolvers = &#123;</span><br><span class="line">  Query: &#123;</span><br><span class="line">    hello: <span class="function"><span class="params">()</span> =&gt;</span> <span class="string">'Hello world!'</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">const</span> server = <span class="keyword">new</span> ApolloServer(&#123; typeDefs, resolvers &#125;);</span><br><span class="line"><span class="keyword">const</span> app = express();</span><br><span class="line">server.applyMiddleware(&#123; app &#125;);</span><br><span class="line">app.listen(&#123; <span class="attr">port</span>: <span class="number">4000</span> &#125;, () =&gt;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'Now browse to http://localhost:4000'</span> + server.graphqlPath)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install apollo-server-express express</span><br><span class="line">node server.js</span><br></pre></td></tr></table></figure>
+
+<h2 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h2><ol>
+<li><a href="https://github.com/facebook/relay" target="_blank" rel="noopener">relay</a></li>
+</ol>
+<p>用于构建与 GraphQL 后端交流的 React 应用。</p>
+<ol start="2">
+<li><a href="https://github.com/apollographql/apollo-client" target="_blank" rel="noopener">Apollo Client</a></li>
+</ol>
+<p>一个强大的 JavaScript GraphQL 客户端，设计用于与 React、React Native、Angular 2 或者原生 JavaScript 一同工作。</p>
+<ol start="3">
+<li><a href="https://github.com/prisma/graphql-request" target="_blank" rel="noopener">graphql-request</a></li>
+</ol>
+<p>一个简单灵活的 JavaScript GraphQL 客户端，可以运行于所有的 JavaScript 环境（浏览器，Node.js 和 React Native）—— 基本上是 fetch 的轻度封装。</p>
+<ol start="4">
+<li><a href="https://github.com/kadirahq/lokka" target="_blank" rel="noopener">lokka</a></li>
+</ol>
+<p>一个简单的 JavaScript GraphQL 客户端，可以运行于所有的 JavaScript 环境 —— 浏览器，Node.js 和 React Native。</p>
+<ol start="5">
+<li><a href="https://github.com/yoshuawuyts/nanogql" target="_blank" rel="noopener">nanogql</a></li>
+</ol>
+<p>一个使用模板字符串的小型 GraphQL 客户端库。</p>
+<ol start="6">
+<li><a href="https://github.com/Houfeng/gq-loader" target="_blank" rel="noopener">gq-loader</a></li>
+</ol>
+<p>一个简单的 JavaScript GraphQL 客户端，通过 webpack 加载器让 *.gql 文件作为模块使用。</p>
+<ol start="7">
+<li><a href="https://aws.github.io/aws-amplify" target="_blank" rel="noopener">aws-amplify</a></li>
+</ol>
+<p>使用云服务进行应用开发的 JavaScript 库，支持 GraphQL 后端和用于处理 GraphQL 数据的 React 组件。</p>
+<ol start="8">
+<li><a href="https://github.com/grafoojs/grafoo" target="_blank" rel="noopener">grafoo</a></li>
+</ol>
+<p>一个通用的 GraphQL 客户端，具有仅 1.6kb 的多框架的视图层集成。</p>
+<ol start="9">
+<li><a href="https://github.com/FormidableLabs/urql" target="_blank" rel="noopener">urql</a></li>
+</ol>
+<p>一个用于 React 的高度可定制且用途广泛的 GraphQL 客户端。</p>
+<h2 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h2><ul>
+<li><a href="https://github.com/graphql/graphiql" target="_blank" rel="noopener">graphiql</a>: 一个交互式的运行于浏览器中的 GraphQL IDE</li>
+<li><a href="https://github.com/graphql/libgraphqlparser" target="_blank" rel="noopener">libgraphqlparser</a>: 一个 C++ 版 GraphQL 查询语言分析器，提供 C 和 C++ API</li>
+<li><a href="https://github.com/graphql/graphql-language-service" target="_blank" rel="noopener">Graphql Language Service</a>: 一个用于构建 IDE 的 GraphQL 语言服务（诊断、自动完成等）的接口。</li>
+<li><a href="https://github.com/quicktype/quicktype" target="_blank" rel="noopener">quicktype</a>: 在 TypeScript、Swift、golang、C#、C++ 等语言中为 GraphQL 查询生成类型。</li>
+</ul>
+<h2 id="规则"><a href="#规则" class="headerlink" title="规则"></a>规则</h2><p><a href="http://spec.graphql.org/draft/" target="_blank" rel="noopener">http://spec.graphql.org/draft/</a></p>
+<ul>
+<li>层次分明</li>
+<li>以产品为中心</li>
+<li>强类型</li>
+<li>客户端定制</li>
+<li>内省</li>
+</ul>
+<ol>
+<li>注释</li>
+</ol>
+<p><code>#</code> 开头的单行注释。</p>
+<ol start="2">
+<li>无语义逗号</li>
+</ol>
+<p><code>,</code> 与空白符和行终止符类似，逗号(,)也是提升源文本的易读性、分隔词法记号，对GraphQL查询文档的语法语义上也无显著影响</p>
+<ol start="3">
+<li>标点</li>
+</ol>
+<p><code>! $ ( ) ... : = @ [ ] { | }</code></p>
+<ol start="4">
+<li>命名</li>
+</ol>
+<p><code>/[_A-Za-z][_0-9A-Za-z]*/</code></p>
+<ol start="5">
+<li>操作</li>
+</ol>
+<p>GraphQL做了三类操作模型：</p>
+<ul>
+<li><code>query</code> 查询 – 只读获取</li>
+<li><code>mutation</code> 更改 – 先写入再获取</li>
+<li><code>subscription</code> 订阅 – 一个长期请求，根据源事件获取数据</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mutation &#123;</span><br><span class="line">  likeStory(storyID: <span class="number">12345</span>) &#123;</span><br><span class="line">    story &#123;</span><br><span class="line">      likeCount</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>查询简写</li>
+</ol>
+<p>如果一个文档只包含一个查询操作，也不包含变量和指令，那么这个操作可以省略query关键字和操作名。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  field</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="7">
+<li>选择集合</li>
+</ol>
+<p>一个操作选择了他所需要的信息的集合，然后就会精确地得到他所要的信息，没有一点多余，避免了数据的多取或少取。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  id</span><br><span class="line">  firstName</span><br><span class="line">  lastName</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="8">
+<li>字段</li>
+</ol>
+<p>一个选择集合主要由字段组成，一个字段描述了选择集合中对请求可用的一个离散信息片段。</p>
+<p>例如，选择复杂数据和关联数据，并深入到嵌套内部，直到标量值字段</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  me &#123;</span><br><span class="line">    id</span><br><span class="line">    firstName</span><br><span class="line">    lastName</span><br><span class="line">    birthday &#123;</span><br><span class="line">      month</span><br><span class="line">      day</span><br><span class="line">    &#125;</span><br><span class="line">    friends &#123;</span><br><span class="line">      name</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>一个操作中，顶层选择集合的字段通常表示对应用和观察者而言全局可见的信息。</p>
+<p>典型的案例有顶层字段指向当前登录的观察者，或者引用唯一id来取特定类型数据：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># &#96;me&#96; could represent the currently logged in viewer.&#96;me&#96;指代当前登录的观察者</span><br><span class="line">&#123;</span><br><span class="line">  me &#123;</span><br><span class="line">    name</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># &#96;user&#96; represents one of many users in a graph of data, referred to by a</span><br><span class="line"># unique identifier.</span><br><span class="line"># &#96;user&#96;表示一个通过id来从图数据中取出来的用户</span><br><span class="line">&#123;</span><br><span class="line">  user(id: 4) &#123;</span><br><span class="line">    name</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="9">
+<li>参数</li>
+</ol>
+<p>字段在概念上是会返回值的函数，偶尔接受参数以改变其行为。</p>
+<p>通常这些参数和GraphQL服务器实现的函数参数直接映射。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  user(id: <span class="number">4</span>) &#123;</span><br><span class="line">    id</span><br><span class="line">    name</span><br><span class="line">    profilePic(size: <span class="number">100</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>许多参数也能存在于给定字段：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  user(id: <span class="number">4</span>) &#123;</span><br><span class="line">    id</span><br><span class="line">    name</span><br><span class="line">    profilePic(width: <span class="number">100</span>, <span class="attr">height</span>: <span class="number">50</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="10">
+<li>参数无需顺序</li>
+</ol>
+<p>参数可以以任意句法顺序排列，都表示同一种语义。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  picture(width: 200, height: 100)</span><br><span class="line">&#125;</span><br><span class="line"># 等同于</span><br><span class="line">&#123;</span><br><span class="line">  picture(height: 100, width: 200)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="11">
+<li>字段别名</li>
+</ol>
+<p>默认情况下，返回对象的键名会采用查询的字段名，然后可以定义不同的键名</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># 请求参数</span><br><span class="line">&#123;</span><br><span class="line">  user(id: 4) &#123;</span><br><span class="line">    id</span><br><span class="line">    name</span><br><span class="line">    smallPic: profilePic(size: 64)</span><br><span class="line">    bigPic: profilePic(size: 1024)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 返回结果</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"user"</span>: &#123;</span><br><span class="line">    <span class="string">"id"</span>: <span class="number">4</span>,</span><br><span class="line">    <span class="string">"name"</span>: <span class="string">"Mark Zuckerberg"</span>,</span><br><span class="line">    <span class="string">"smallPic"</span>: <span class="string">"https://cdn.site.io/pic-4-64.jpg"</span>,</span><br><span class="line">    <span class="string">"bigPic"</span>: <span class="string">"https://cdn.site.io/pic-4-1024.jpg"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用别名：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 请求参数</span><br><span class="line">&#123;</span><br><span class="line">  zuck: user(id: 4) &#123;</span><br><span class="line">    id</span><br><span class="line">    name</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 返回结果</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"zuck"</span>: &#123;</span><br><span class="line">    <span class="string">"id"</span>: <span class="number">4</span>,</span><br><span class="line">    <span class="string">"name"</span>: <span class="string">"Mark Zuckerberg"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="12">
+<li>片段</li>
+</ol>
+<p>片段是GraphQL组合拼装的基本单元，它通用选择集字段的重用得以实现，减少了文档中的重复文本。</p>
+<p>内联片段可以直接在选择集合内使用，通常用于interface（接口）或者union（联合）这种存在类型条件的场合。</p>
+<p>如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">query noFragments &#123;</span><br><span class="line">  user(id: 4) &#123;</span><br><span class="line">    friends(first: 10) &#123;</span><br><span class="line">      id</span><br><span class="line">      name</span><br><span class="line">      profilePic(size: 50)</span><br><span class="line">    &#125;</span><br><span class="line">    mutualFriends(first: 10) &#123;</span><br><span class="line">      id</span><br><span class="line">      name</span><br><span class="line">      profilePic(size: 50)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这些重复的字段可以提取进一个片段中，然后被父级片段或者query组合：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">query withFragments &#123;</span><br><span class="line">  user(id: 4) &#123;</span><br><span class="line">    friends(first: 10) &#123;</span><br><span class="line">      ...friendFields</span><br><span class="line">    &#125;</span><br><span class="line">    mutualFriends(first: 10) &#123;</span><br><span class="line">      ...friendFields</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fragment friendFields on User &#123;</span><br><span class="line">  id</span><br><span class="line">  name</span><br><span class="line">  profilePic(size: 50)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>片段可以通过解构操作符(…)被消费掉，片段内的字段将会被添加到片段被调用的同层级选择集合，这一过程也会在多级别片段中解构发生。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">query withNestedFragments &#123;</span><br><span class="line">  user(id: 4) &#123;</span><br><span class="line">    friends(first: 10) &#123;</span><br><span class="line">      ...friendFields</span><br><span class="line">    &#125;</span><br><span class="line">    mutualFriends(first: 10) &#123;</span><br><span class="line">      ...friendFields</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fragment friendFields on User &#123;</span><br><span class="line">  id</span><br><span class="line">  name</span><br><span class="line">  ...standardProfilePic</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fragment standardProfilePic on User &#123;</span><br><span class="line">  profilePic(size: 50)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>noFragments，withFragments和withNestedFragments三个查询都会产生相同的返回对象。</p>
+<ol start="13">
+<li>类型条件</li>
+</ol>
+<p>片段需要指定应用于的目标类型，在上述案例中，friendFields在查询User的上下文中使用。</p>
+<p>片段不能应用于任何输入值（标量值，枚举型或者输入型对象）。</p>
+<p>片段可应用与对象型，接口和联合。</p>
+<p>只有在对象的具体类型和片段的应用目标类型匹配的时候，片段内的选择集合才会返回值。</p>
+<p>如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">query FragmentTyping &#123;</span><br><span class="line">  profiles(handles: [&quot;zuck&quot;, &quot;cocacola&quot;]) &#123;</span><br><span class="line">    handle</span><br><span class="line">    ...userFragment</span><br><span class="line">    ...pageFragment</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fragment userFragment on User &#123;</span><br><span class="line">  friends &#123;</span><br><span class="line">    count</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fragment pageFragment on Page &#123;</span><br><span class="line">  likers &#123;</span><br><span class="line">    count</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>profiles根字段将会返回一个列表，其中的元素可能是Page或者User类型。</p>
+<p>当profiles内的对象是User类型时，friends会出现，而likers不会。</p>
+<p>反之当结果内的对象是Page时，likers会出现，friends则不会。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">"profiles"</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">"handle"</span>: <span class="string">"zuck"</span>,</span><br><span class="line">      <span class="string">"friends"</span>: &#123; <span class="string">"count"</span> : <span class="number">1234</span> &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">"handle"</span>: <span class="string">"cocacola"</span>,</span><br><span class="line">      <span class="string">"likers"</span>: &#123; <span class="string">"count"</span> : <span class="number">90234512</span> &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="14">
+<li>内联片段</li>
+</ol>
+<p>片段可以在选择集合内以内联格式定义，这用于根据运行时类型条件式地引入字段。</p>
+<p>这个特性的标准片段引入版本在query FragmentTyping中已经演示，也可以使用内联片段的方式来实现：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">query inlineFragmentTyping &#123;</span><br><span class="line">  profiles(handles: [&quot;zuck&quot;, &quot;cocacola&quot;]) &#123;</span><br><span class="line">    handle</span><br><span class="line">    ... on User &#123;</span><br><span class="line">      friends &#123;</span><br><span class="line">        count</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ... on Page &#123;</span><br><span class="line">      likers &#123;</span><br><span class="line">        count</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>内联片段也用于将指令应用于一群字段的场景。如果省略了类型条件，片段则被视为等同于封装所在的上下文。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">query inlineFragmentNoType($expandedInfo: Boolean) &#123;</span><br><span class="line">  user(handle: &quot;zuck&quot;) &#123;</span><br><span class="line">    id</span><br><span class="line">    name</span><br><span class="line">    ... @include(if: $expandedInfo) &#123;</span><br><span class="line">      firstName</span><br><span class="line">      lastName</span><br><span class="line">      birthday</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="输入值"><a href="#输入值" class="headerlink" title="输入值"></a>输入值</h2><ul>
+<li><code>变量</code>: 可以使用变量作为参数，已最大化查询重用，避免客户端运行时耗费巨大的字符串重建</li>
+<li><code>整数值</code>: 指定整数不应该使用小数点或指数符号，0、1、2、3…</li>
+<li><code>浮点值</code>: 需要包含小数点(例如：1.0)或者指数符号(例如：1e50)或者两者</li>
+<li><code>字符串值</code>: 由双引号(<code>&quot;</code>)包起来的字符，譬如 <code>&quot;Hello World&quot;</code></li>
+<li><code>布尔值</code>: true和false</li>
+<li><code>空值</code>: 显式-null，隐式-不使用任何值</li>
+<li><code>枚举值</code>: 表现为没有引号包裹的名称，规范建议使用全大写字母表示枚举值</li>
+<li><code>列表值</code>: 包在方括号 <code>[]</code> 中的有序值序列，列表值可以是任意字面量值或者变量，譬如 <code>[1, 2, 3]</code></li>
+<li><code>对象值</code>: 无需键值列表，使用花括号 <code>{}</code> 包起来</li>
+<li><code>输入类型</code>: 具名类型、列表类型、非空类型 具名类型 → 命名</li>
+<li><code>指令</code>:  @名称 参数? 指令为GraphQL文档提供了另一种运行时执行行为和类型验证行为</li>
+</ul>
+<hr>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="Jinwen 微信支付">
+        <p>微信支付</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/protobuf/" rel="tag"><i class="fa fa-tag"></i> protobuf</a>
+              <a href="/tags/graphql/" rel="tag"><i class="fa fa-tag"></i> graphql</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/12/01/next-%E5%B0%8F%E7%BB%93/" rel="prev" title="next-小结">
+      <i class="fa fa-chevron-left"></i> next-小结
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+    <div id="gitmentContainer"></div>
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <div class="night-mode">
+        <div class="toggle-mode">
+          <div class="icon" title="白天模式">
+            <i class="fa fa-sun-o" aria-hidden="true"></i>
+          </div>
+          <div class="toggle-switch">
+            <label class="switch" id="night-switch">
+              <input type="checkbox" id="switch-style">
+              <div class="slider round"></div>
+            </label>
+          </div>
+          <div class="icon" title="夜间模式">
+            <i class="fa fa-moon-o" aria-hidden="true"></i>
+          </div>
+        </div>
+      </div>
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#protobuf"><span class="nav-number">1.</span> <span class="nav-text">protobuf</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#常用方法"><span class="nav-number">1.1.</span> <span class="nav-text">常用方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#官方示例"><span class="nav-number">1.2.</span> <span class="nav-text">官方示例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#get-set"><span class="nav-number">1.2.1.</span> <span class="nav-text">get&#x2F;set</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#traverse-types"><span class="nav-number">1.2.2.</span> <span class="nav-text">traverse-types</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#streaming-rpc"><span class="nav-number">1.2.3.</span> <span class="nav-text">streaming-rpc</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-proto-文件"><span class="nav-number">1.3.</span> <span class="nav-text">使用 .proto 文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-JSON-描述符"><span class="nav-number">1.4.</span> <span class="nav-text">使用 JSON 描述符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#仅使用反射"><span class="nav-number">1.5.</span> <span class="nav-text">仅使用反射</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用自定义类"><span class="nav-number">1.6.</span> <span class="nav-text">使用自定义类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-services"><span class="nav-number">1.7.</span> <span class="nav-text">使用 services</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-TypeScript"><span class="nav-number">1.8.</span> <span class="nav-text">使用 TypeScript</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用JS-API"><span class="nav-number">1.9.</span> <span class="nav-text">使用JS API</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用生成的静态代码"><span class="nav-number">1.10.</span> <span class="nav-text">使用生成的静态代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用装饰器"><span class="nav-number">1.11.</span> <span class="nav-text">使用装饰器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#命令行"><span class="nav-number">1.12.</span> <span class="nav-text">命令行</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#pbjs-for-JavaScript"><span class="nav-number">1.12.1.</span> <span class="nav-text">pbjs for JavaScript</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生产环境"><span class="nav-number">1.13.</span> <span class="nav-text">生产环境</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#graphql"><span class="nav-number">2.</span> <span class="nav-text">graphql</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#服务端"><span class="nav-number">2.1.</span> <span class="nav-text">服务端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#客户端"><span class="nav-number">2.2.</span> <span class="nav-text">客户端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#工具"><span class="nav-number">2.3.</span> <span class="nav-text">工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#规则"><span class="nav-number">2.4.</span> <span class="nav-text">规则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#输入值"><span class="nav-number">2.5.</span> <span class="nav-text">输入值</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jinwen</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/jinven" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;jinven" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:fujinwen@yahoo.com" title="E-Mail → mailto:fujinwen@yahoo.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jinwen</span>
+</div>
+<!--
+    <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+    <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+-->
+<link rel="stylesheet" href="/css/third/gitment.css">
+<script src="/js/third/gitment.browser.js"></script>
+<script src="/js/third/gitment.js"></script>
+
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.6.0
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        总访客量
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        总访问量
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+  <!-- _scripts/index.swig -->
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-nest@latest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  <!-- _third-party/index.swig -->
+  
+
+
+
+
+  
+<!-- 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/instantsearch.js@2/dist/instantsearch.min.css">
+    <script src="//cdn.jsdelivr.net/npm/instantsearch.js@2/dist/instantsearch.min.js" async></script>
+-->
+<link rel="stylesheet" href="/css/third/instantsearch.min.css">
+<script src="/js/third/instantsearch.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <!-- theme.pjax -->
+
+  <!-- _third-party/math/index.swig -->
+  
+
+  <!-- _third-party/quicklink.swig -->
+  
+
+
+  <!-- _third-party/bodyEnd.swig -->
+
+  <!-- theme.pjax -->
+  <!-- 
+    <canvas width="1366" height="662" style="position: fixed; left: 0px; top: 0px; z-index: 2147483647; pointer-events: none;"></canvas>
+  -->
+  <script src="/js/cursor-effects.js"></script>
+  <script>
+    // protobuf和graphql
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?db1c134844bf26277860eaa90b796200";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+</body>
+</html>
