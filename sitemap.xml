@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://jinven.github.io/2019/12/01/react-%E5%B0%8F%E7%BB%93/</loc>
+    
+    <lastmod>2020-01-16T06:42:39.694Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://jinven.github.io/about/index.html</loc>
     
     <lastmod>2020-01-15T10:26:36.076Z</lastmod>
@@ -208,13 +215,6 @@
     <loc>https://jinven.github.io/2019/12/01/protobuf%E5%92%8Cgraphql/</loc>
     
     <lastmod>2020-01-15T08:49:09.277Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://jinven.github.io/2019/12/01/react-%E5%B0%8F%E7%BB%93/</loc>
-    
-    <lastmod>2020-01-15T08:43:21.421Z</lastmod>
     
   </url>
   

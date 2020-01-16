@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://jinven.github.io/2019/12/01/react-%E5%B0%8F%E7%BB%93/</loc>
+    <lastmod>2020-01-16</lastmod>
+  </url>  <url>
     <loc>https://jinven.github.io/2019/12/01/angular-%E5%B0%8F%E7%BB%93/</loc>
     <lastmod>2020-01-15</lastmod>
   </url>  <url>
@@ -86,9 +89,6 @@
     <lastmod>2020-01-15</lastmod>
   </url>  <url>
     <loc>https://jinven.github.io/2019/12/01/protobuf%E5%92%8Cgraphql/</loc>
-    <lastmod>2020-01-15</lastmod>
-  </url>  <url>
-    <loc>https://jinven.github.io/2019/12/01/react-%E5%B0%8F%E7%BB%93/</loc>
     <lastmod>2020-01-15</lastmod>
   </url>  <url>
     <loc>https://jinven.github.io/2019/12/01/vue-%E5%B0%8F%E7%BB%93/</loc>
