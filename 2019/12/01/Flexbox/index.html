@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+  <!-- 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1/themes/blue/pace-theme-minimal.css">
+    <script src="//cdn.jsdelivr.net/npm/pace-js@1/pace.min.js" async></script>
+  -->
+  <link rel="stylesheet" href="/css/third/pace-theme-minimal.css">
+  <script src="/js/third/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://jinven.github.io').hostname,
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.6.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":true,"scrollpercent":true},
+    bookmark: {"enable":true,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: 'TTEP1D8FD8',
+      apiKey: 'e4ce9422094b2c7623570a8ba17abd52',
+      indexName: 'jwindex',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"输入关键字","hits_empty":"没有找到与 ${query} 相关的内容","hits_stats":"${hits} 条记录，耗时 ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="布局中的项目可以增长和缩小。可以将空间分配给项目本身，或者在项目之间或周围分配空间。采用 flex 布局的元素，称为 flex 容器(flex container)， flex 容器所有的子元素自动成为容器成员。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flexbox">
+<meta property="og:url" content="https://jinven.github.io/2019/12/01/Flexbox/index.html">
+<meta property="og:site_name" content="Jinwen">
+<meta property="og:description" content="布局中的项目可以增长和缩小。可以将空间分配给项目本身，或者在项目之间或周围分配空间。采用 flex 布局的元素，称为 flex 容器(flex container)， flex 容器所有的子元素自动成为容器成员。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.w3.org/TR/css-flexbox-1/images/flex-direction-terms.svg">
+<meta property="article:published_time" content="2019-11-30T16:05:01.000Z">
+<meta property="article:modified_time" content="2020-01-17T02:22:49.536Z">
+<meta property="article:author" content="Jinwen">
+<meta property="article:tag" content="css">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.w3.org/TR/css-flexbox-1/images/flex-direction-terms.svg">
+
+<link rel="canonical" href="https://jinven.github.io/2019/12/01/Flexbox/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Flexbox | Jinwen</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Jinwen</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">20</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">51</span></a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-fw fa-sitemap"></i>站点地图</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input" id="search-input"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+  
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+  <a href="https://github.com/jinven" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://jinven.github.io/2019/12/01/Flexbox/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jinwen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jinwen">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Flexbox
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-12-01 00:05:01" itemprop="dateCreated datePublished" datetime="2019-12-01T00:05:01+08:00">2019-12-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-01-17 10:22:49" itemprop="dateModified" datetime="2020-01-17T10:22:49+08:00">2020-01-17</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>布局中的项目可以增长和缩小。可以将空间分配给项目本身，或者在项目之间或周围分配空间。<br>采用 flex 布局的元素，称为 flex 容器(flex container)， flex 容器所有的子元素自动成为容器成员。</p>
+<a id="more"></a>
+
+<h1 id="Flexbox-布局-Flexible-Box-Layout"><a href="#Flexbox-布局-Flexible-Box-Layout" class="headerlink" title="Flexbox 布局 (Flexible Box Layout)"></a>Flexbox 布局 (Flexible Box Layout)</h1><p>默认存在两根轴：水平的主轴(main-axis)和垂直的交叉轴(cross-axis)。</p>
+<p><img src="https://www.w3.org/TR/css-flexbox-1/images/flex-direction-terms.svg" alt="flex"></p>
+<ul>
+<li>元素默认沿主轴排列；</li>
+<li>主轴的开始位置(与边框的交叉点)叫做 main-start ，结束位置叫做 main end；</li>
+<li>交叉轴的开始位置叫做 cross-start ，结束位置叫做 cross-end；</li>
+<li>单个项目占据的主轴空间叫做 main-size ，占据的交叉轴空间叫做 cross-size 。</li>
+</ul>
+<p>Flexbox 可以对齐主轴或横轴上的项目，从而提供对一组项目的大小和对齐的高级控制，大多数场景下，使用 flex-direction、align-items 和 justify-content 三个样式属性就已经能满足大多数布局需求，换而言之如果熟悉 Flexbox 就可以应对大多数场景下的布局需求。</p>
+<p>设为 Flex 布局以后，子元素的 float 、 clear 和 vertical-align 属性将失效。</p>
+<h2 id="Flex-Container-属性"><a href="#Flex-Container-属性" class="headerlink" title="Flex Container 属性"></a>Flex Container 属性</h2><p>在规范中， Flex Container 上，一共有七个属性可以设置，但是 flex-flow 在 React Native 上是不支持的。</p>
+<h3 id="flex-direction"><a href="#flex-direction" class="headerlink" title="flex-direction"></a><code>flex-direction</code></h3><p>属性指定了flex 元素是如何在 flex 容器中布局的，定义了主轴的方向(正方向或反方向)。</p>
+<p>支持的值：</p>
+<ul>
+<li><code>row</code>: flex 容器的主轴被定义为与文本方向相同。 主轴起点和主轴终点与内容方向相同。</li>
+<li><code>row-reverse</code>: 表现和 row 相同，但是置换了主轴起点和主轴终点。</li>
+<li><code>column</code>: flex 容器的主轴和块轴相同。主轴起点与主轴终点和书写模式的前后点相同。</li>
+<li><code>column-reverse</code>: 表现和 column 相同，但是置换了主轴起点和主轴终点。</li>
+</ul>
+<h3 id="flex-wrap"><a href="#flex-wrap" class="headerlink" title="flex-wrap"></a><code>flex-wrap</code></h3><p>指定 flex 元素单行显示还是多行显示。如果允许换行，这个属性允许控制行的堆叠方向。默认值为 nowrap。</p>
+<p>支持的值：</p>
+<ul>
+<li><code>nowrap</code>: 不换行。flex 元素被摆放到到一行，这可能导致溢出 flex 容器。交叉轴的起点会根据 flex-direction 的值相当于 start 或 before。</li>
+<li><code>wrap</code>: flex 元素被打断到多个行中。交叉轴的起点会根据 flex-direction 的值选择等于start 或before。交叉轴的终点为确定的交叉轴的起点的另一端。</li>
+<li><code>wrap-reverse</code>: 和 wrap 的行为一样，但是交叉轴的起点和交叉轴的终点互换。</li>
+</ul>
+<h3 id="flex-flow"><a href="#flex-flow" class="headerlink" title="flex-flow"></a><code>flex-flow</code></h3><p>属性是 flex-direction 和 flex-wrap 的简写。默认值为 row nowrap。</p>
+<p>语法格式</p>
+<ul>
+<li><code>&lt;&#39;flex-direction&#39;&gt; || &lt;&#39;flex-wrap&#39;&gt;</code></li>
+</ul>
+<h3 id="align-items"><a href="#align-items" class="headerlink" title="align-items"></a><code>align-items</code></h3><p>属性将所有直接子节点上的 align-self 值设置为一个组。 align-self 属性设置项目在其包含块中在交叉轴方向上的对齐方式。默认值为 stretch。</p>
+<table>
+<thead>
+<tr>
+<th>值</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>stretch</td>
+<td>flex 元素在交叉轴方向拉伸到与容器相同的高度或宽度（flex 元素不能固定尺寸）</td>
+</tr>
+<tr>
+<td>flex-start</td>
+<td>交叉轴的起点对齐</td>
+</tr>
+<tr>
+<td>flex-end</td>
+<td>交叉轴的终点对齐</td>
+</tr>
+<tr>
+<td>center</td>
+<td>交叉轴的中点对齐</td>
+</tr>
+<tr>
+<td>baseline</td>
+<td>元素第一行文字的基线对齐</td>
+</tr>
+</tbody></table>
+<h3 id="align-content"><a href="#align-content" class="headerlink" title="align-content"></a><code>align-content</code></h3><p>属性设置了如何沿着 flex 容器的交叉轴和在 flex 元素之间和周围分配空间。默认值为 stretch。</p>
+<p>该属性对单行弹性盒子模型无效。（即：带有 flex-wrap: nowrap 的 flex 容器）。</p>
+<table>
+<thead>
+<tr>
+<th>值</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>stretch</td>
+<td>拉伸所有 flex 元素来填满剩余空间。剩余空间平均的分配给每一个 flex 元素</td>
+</tr>
+<tr>
+<td>flex-start</td>
+<td>所有 flex 元素从垂直轴起点开始填充。第一个 flex 元素的垂直轴起点边和 flex 容器的垂直轴起点边对齐。接下来的每一个 flex 元素紧跟前一个 flex 元素。</td>
+</tr>
+<tr>
+<td>flex-end</td>
+<td>所有 flex 元素从垂直轴末尾开始填充。最后一个 flex 元素的垂直轴终点和容器的垂直轴终点对齐。同时所有后续 flex 元素与前一个对齐。</td>
+</tr>
+<tr>
+<td>center</td>
+<td>所有 flex 元素朝向容器的中心填充。每 flex 元素互相紧挨，相对于容器居中对齐。容器的垂直轴起点边和第一个 flex 元素的距离相等于容器的垂直轴终点边和最后一个 flex 元素的距离。</td>
+</tr>
+<tr>
+<td>space-between</td>
+<td>所有 flex 元素在容器中平均分布。相邻两 flex 元素间距相等。容器的垂直轴起点边和终点边分别与第一个 flex 元素和最后一个 flex 元素的边对齐。</td>
+</tr>
+<tr>
+<td>space-around</td>
+<td>所有 flex 元素在 flex 容器中平均分布，相邻两 flex 元素间距相等。容器的垂直轴起点边和终点边分别与第一个 flex 元素和最后一个 flex 元素的距离是相邻两 flex 元素间距的一半。</td>
+</tr>
+<tr>
+<td>space-evenly</td>
+<td>flex 元素都沿着主轴均匀分布在指定的 flex 元素中。相邻 flex 元素之间的间距，主轴起始位置到第一个 flex 元素的间距,，主轴结束位置到最后一个 flex 元素的间距，都完全一样。</td>
+</tr>
+</tbody></table>
+<h3 id="justify-content"><a href="#justify-content" class="headerlink" title="justify-content"></a>justify-content</h3><p>justify-content 属性定义了浏览器如何分配顺着 flex 容器主轴的 flex 元素之间及其周围的空间。</p>
+<table>
+<thead>
+<tr>
+<th>值</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>flex-start</td>
+<td>从行首开始排列。每行第一个 flex 元素与行首对齐，同时所有后续的 flex 元素与前一个对齐。</td>
+</tr>
+<tr>
+<td>flex-end</td>
+<td>从行尾开始排列。每行最后一个 flex 元素与行尾对齐，其他元素将与后一个对齐。</td>
+</tr>
+<tr>
+<td>center</td>
+<td>伸缩元素向每行中点排列。每行第一个元素到行首的距离将与每行最后一个元素到行尾的距离相同。</td>
+</tr>
+<tr>
+<td>space-between</td>
+<td>在每行上均匀分配 flex 元素。相邻元素间距离相同。每行第一个元素与行首对齐，每行最后一个元素与行尾对齐。</td>
+</tr>
+<tr>
+<td>space-around</td>
+<td>在每行上均匀分配 flex 元素。相邻元素间距离相同。每行第一个元素到行首的距离和每行最后一个元素到行尾的距离将会是相邻元素之间距离的一半。</td>
+</tr>
+<tr>
+<td>space-evenly</td>
+<td>flex 元素都沿着主轴均匀分布在指定的 flex 元素中。相邻 flex 元素之间的间距，主轴起始位置到第一个 flex 元素的间距,，主轴结束位置到最后一个 flex 元素的间距，都完全一样。</td>
+</tr>
+</tbody></table>
+<h3 id="place-content"><a href="#place-content" class="headerlink" title="place-content"></a>place-content</h3><p>place-content 属性是 align-content 和 justify-content 的简写。</p>
+<p>语法格式</p>
+<ul>
+<li><p><code>&lt;&#39;align-content&#39;&gt; &lt;&#39;justify-content&#39;&gt;?</code></p>
+</li>
+<li><p>如果第二个值不存在，且第一个值适用于用于两者，则第二个值复用第一个</p>
+</li>
+<li><p>如果第二个值不存在，且第一个值不适用于用于两者，则整个值无效</p>
+</li>
+</ul>
+<h2 id="Flex-Item-属性"><a href="#Flex-Item-属性" class="headerlink" title="Flex Item 属性"></a>Flex Item 属性</h2><p>在 Flex Item 上，同样也有六个属性，而 order 属性在 React Native 上不支持。</p>
+<h3 id="order"><a href="#order" class="headerlink" title="order"></a>order</h3><p>order 属性规定了 flex 容器中的 flex 元素在布局时的顺序。flex 元素按照 order 属性的值的增序进行布局。拥有相同 order 属性值的 flex 元素按照它们在源代码中出现的顺序进行布局。默认值为 0。</p>
+<p>语法格式</p>
+<ul>
+<li><code>&lt;integer&gt;</code></li>
+</ul>
+<h3 id="flex-grow"><a href="#flex-grow" class="headerlink" title="flex-grow"></a>flex-grow</h3><p>flex-grow 属性定义 flex 元素的拉伸因子。</p>
+<p>语法格式</p>
+<ul>
+<li><code>&lt;number&gt; | inherit</code></li>
+</ul>
+<h3 id="flex-shrink"><a href="#flex-shrink" class="headerlink" title="flex-shrink"></a>flex-shrink</h3><p>flex-shrink 属性指定了 flex 元素的收缩规则。flex 元素仅在默认宽度之和大于容器的时候才会发生收缩，其收缩的大小是依据 flex-shrink 的值。默认值为 1。</p>
+<p>语法格式</p>
+<ul>
+<li><code>&lt;number&gt; | inherit</code></li>
+</ul>
+<h3 id="flex-basis"><a href="#flex-basis" class="headerlink" title="flex-basis"></a>flex-basis</h3><p>flex-basis 指定了 flex 元素在主轴方向上的初始大小。如果不使用 box-sizing 改变盒模型的话，那么这个属性就决定了 flex 元素的内容盒（content-box）的尺寸。</p>
+<pre><code>注意：如果一个 flex 元素同时设置了 flex-basis (auto 除外)和 width (或者 flex-direction: column 时设置了 height )，flex-basis 权级更高。</code></pre><p>语法规范</p>
+<ul>
+<li><p><code>content | &lt;&#39;width&#39;&gt;</code></p>
+</li>
+<li><p><code>&lt;’width’&gt;</code></p>
+<ul>
+<li>width 值可以是 <code>&lt;length&gt;</code>;</li>
+<li>该值也可以是一个相对于其父弹性盒容器主轴尺寸的百分数 。</li>
+<li>负值是不被允许的。</li>
+<li>默认为 0。</li>
+</ul>
+</li>
+<li><p>content</p>
+<ul>
+<li>基于 flex 元素的内容自动调整大小。</li>
+</ul>
+</li>
+</ul>
+<h3 id="flex"><a href="#flex" class="headerlink" title="flex"></a>flex</h3><p>flex 规定了 flex 元素如何伸长或缩短以适应 flex 容器中的可用空间。这是一个简写属性，用来设置 flex-grow, flex-shrink 与 flex-basis。</p>
+<p>语法格式</p>
+<ul>
+<li><p><code>none | [ &lt;&#39;flex-grow&#39;&gt; &lt;&#39;flex-shrink&#39;&gt;? || &lt;&#39;flex-basis&#39;&gt; ]</code></p>
+</li>
+<li><p>initial</p>
+<ul>
+<li>元素会根据自身宽高设置尺寸。</li>
+<li>它会缩短自身以适应 flex 容器，但不会伸长并吸收 flex 容器中的额外自由空间来适应 flex 容器 。</li>
+<li>相当于将属性设置为”flex: 0 1 auto”。</li>
+</ul>
+</li>
+<li><p>auto</p>
+<ul>
+<li>元素会根据自身的宽度与高度来确定尺寸，但是会伸长并吸收 flex 容器中额外的自由空间，也会缩短自身来适应 flex 容器。</li>
+<li>这相当于将属性设置为 “flex: 1 1 auto”。</li>
+</ul>
+</li>
+<li><p>none</p>
+<ul>
+<li>元素会根据自身宽高来设置尺寸。</li>
+<li>它是完全非弹性的：既不会缩短，也不会伸长来适应 flex 容器。</li>
+<li>相当于将属性设置为”flex: 0 0 auto”。</li>
+</ul>
+</li>
+</ul>
+<h3 id="align-self"><a href="#align-self" class="headerlink" title="align-self"></a>align-self</h3><p>align-self 会对齐当前 flex 行中的 flex 元素，并覆盖 align-items 的值. 如果任何 flex 元素的侧轴方向 margin 值设置为 auto，则会忽略 align-self。</p>
+<p>语法格式</p>
+<ul>
+<li><code>auto | normal | stretch | &lt;baseline-position&gt; | &lt;overflow-position&gt;? &lt;self-position&gt;</code></li>
+<li><code>where</code></li>
+<li><code>&lt;baseline-position&gt; = [ first | last ]? baseline</code></li>
+<li><code>&lt;overflow-position&gt; = unsafe | safe</code></li>
+<li><code>&lt;self-position&gt; = center | start | end | self-start | self-end | flex-start | flex-end</code></li>
+</ul>
+<h2 id="组件化开发"><a href="#组件化开发" class="headerlink" title="组件化开发"></a>组件化开发</h2><p>不同的平台如 Web、React-Native、微信小程序等各有特色，平台之间的差异很大，会导致很多额外的开发成本。那么如果我们想要完成一个跨平台项目该怎么做呢？</p>
+<p>我们开始从比较容易入手的方向考虑，如果采用模块化组件或是 css-in-js 的方案去完成样式的构建会是一个好的方案么？</p>
+<p>在目前的前端生态中，模块化组件开发会是个很棒的方案，覆盖模式下构建开箱即用的组件同时可以提供方法来覆盖样式再好不过了，但是如果放到小程序开发的模式中，这就会有个很严重的问题，那就是如果我们在层级样式表中写到的样式，是不能直接传给组件来覆盖样式的，组件和组件的隔离在不同小程序中很难被打破。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* CustomComp.js */</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomComp</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">  <span class="keyword">static</span> defaultProps = &#123;</span><br><span class="line">    className: <span class="string">''</span></span><br><span class="line">  &#125;</span><br><span class="line">  render () &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">View</span> <span class="attr">className</span>=<span class="string">&#123;this.props.className&#125;</span>&gt;</span>这段文本的颜色不会由组件外的 class 决定<span class="tag">&lt;/<span class="name">View</span>&gt;</span></span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* MyPage.js */</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> <span class="title">MyPage</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">  render () &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">CustomComp</span> <span class="attr">className</span>=<span class="string">"red-text"</span> /&gt;</span></span></span><br><span class="line"><span class="xml">  &#125;</span></span><br><span class="line"><span class="xml">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* MyPage.scss */</span></span><br><span class="line"><span class="selector-class">.red-text</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: red;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果大家尝试上述的写法，会发现 red-text 类中的样式并没有生效，那么在这种情况下我们如果考虑是使用 css-in-js 会好么？很遗憾，如果你使用它，我们将不会为这些需要运行时处理的样式补全前缀。</p>
+<p>这两个方案都不是合适的方案，那么我们该怎么做呢？试着去打破小程序的组件限制么？我们在微信小程序官方的文档中找到 externalClasses 这个方法，可以先来尝试。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* CustomComp.js */</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomComp</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">  <span class="keyword">static</span> externalClasses = [<span class="string">'my-class'</span>]</span><br><span class="line">  render () &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">View</span> <span class="attr">className</span>=<span class="string">"my-class"</span>&gt;</span>这段文本的颜色由组件外的 class 决定<span class="tag">&lt;/<span class="name">View</span>&gt;</span></span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* MyPage.js */</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> <span class="title">MyPage</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">  render () &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">CustomComp</span> <span class="attr">className</span>=<span class="string">"red-text"</span> /&gt;</span></span></span><br><span class="line"><span class="xml">  &#125;</span></span><br><span class="line"><span class="xml">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* MyPage.scss */</span></span><br><span class="line"><span class="selector-class">.red-text</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: red;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>但是这也并非所有的开发平台都能够提供给开发者相关的方法，所以我们只能转换目光到另一个 addGlobalClass 方法上，这个方法不仅在所有小程序都能够支持，Taro 在 React Native 端上也提供了同样的方法给大家，这样我们也可以避开 css modules 这个体验稍差的方法。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* CustomComp.js */</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomComp</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">  <span class="keyword">static</span> options = &#123;</span><br><span class="line">    addGlobalClass: <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">  render () &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">View</span> <span class="attr">className</span>=<span class="string">"red-text"</span>&gt;</span>这段文本的颜色由组件外的 class 决定<span class="tag">&lt;/<span class="name">View</span>&gt;</span></span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 组件外的样式定义 */</span></span><br><span class="line"><span class="selector-class">.red-text</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: red;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="Jinwen 微信支付">
+        <p>微信支付</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/css/" rel="tag"><i class="fa fa-tag"></i> css</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/12/01/AMD%E3%80%81CommonJS/" rel="prev" title="AMD、CommonJS">
+      <i class="fa fa-chevron-left"></i> AMD、CommonJS
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/12/01/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" rel="next" title="设计模式">
+      设计模式 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+    <div id="gitmentContainer"></div>
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <div class="night-mode">
+        <div class="toggle-mode">
+          <div class="icon" title="白天模式">
+            <i class="fa fa-sun-o" aria-hidden="true"></i>
+          </div>
+          <div class="toggle-switch">
+            <label class="switch" id="night-switch">
+              <input type="checkbox" id="switch-style">
+              <div class="slider round"></div>
+            </label>
+          </div>
+          <div class="icon" title="夜间模式">
+            <i class="fa fa-moon-o" aria-hidden="true"></i>
+          </div>
+        </div>
+      </div>
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Flexbox-布局-Flexible-Box-Layout"><span class="nav-number">1.</span> <span class="nav-text">Flexbox 布局 (Flexible Box Layout)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Flex-Container-属性"><span class="nav-number">1.1.</span> <span class="nav-text">Flex Container 属性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#flex-direction"><span class="nav-number">1.1.1.</span> <span class="nav-text">flex-direction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#flex-wrap"><span class="nav-number">1.1.2.</span> <span class="nav-text">flex-wrap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#flex-flow"><span class="nav-number">1.1.3.</span> <span class="nav-text">flex-flow</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#align-items"><span class="nav-number">1.1.4.</span> <span class="nav-text">align-items</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#align-content"><span class="nav-number">1.1.5.</span> <span class="nav-text">align-content</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#justify-content"><span class="nav-number">1.1.6.</span> <span class="nav-text">justify-content</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#place-content"><span class="nav-number">1.1.7.</span> <span class="nav-text">place-content</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Flex-Item-属性"><span class="nav-number">1.2.</span> <span class="nav-text">Flex Item 属性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#order"><span class="nav-number">1.2.1.</span> <span class="nav-text">order</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#flex-grow"><span class="nav-number">1.2.2.</span> <span class="nav-text">flex-grow</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#flex-shrink"><span class="nav-number">1.2.3.</span> <span class="nav-text">flex-shrink</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#flex-basis"><span class="nav-number">1.2.4.</span> <span class="nav-text">flex-basis</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#flex"><span class="nav-number">1.2.5.</span> <span class="nav-text">flex</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#align-self"><span class="nav-number">1.2.6.</span> <span class="nav-text">align-self</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#组件化开发"><span class="nav-number">1.3.</span> <span class="nav-text">组件化开发</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jinwen</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">51</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/jinven" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;jinven" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:fujinwen@yahoo.com" title="E-Mail → mailto:fujinwen@yahoo.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jinwen</span>
+</div>
+<!--
+    <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+    <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+-->
+<link rel="stylesheet" href="/css/third/gitment.css">
+<script src="/js/third/gitment.browser.js"></script>
+<script src="/js/third/gitment.js"></script>
+
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.6.0
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        总访客量
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        总访问量
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+  <!-- _scripts/index.swig -->
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-nest@latest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  <!-- _third-party/index.swig -->
+  
+
+
+
+
+  
+<!-- 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/instantsearch.js@2/dist/instantsearch.min.css">
+    <script src="//cdn.jsdelivr.net/npm/instantsearch.js@2/dist/instantsearch.min.js" async></script>
+-->
+<link rel="stylesheet" href="/css/third/instantsearch.min.css">
+<script src="/js/third/instantsearch.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <!-- theme.pjax -->
+
+  <!-- _third-party/math/index.swig -->
+  
+
+  <!-- _third-party/quicklink.swig -->
+  
+
+
+  <!-- _third-party/bodyEnd.swig -->
+
+  <!-- theme.pjax -->
+  <!-- 
+    <canvas width="1366" height="662" style="position: fixed; left: 0px; top: 0px; z-index: 2147483647; pointer-events: none;"></canvas>
+  -->
+  <script src="/js/cursor-effects.js"></script>
+  <script>
+    // Flexbox
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?db1c134844bf26277860eaa90b796200";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+</body>
+</html>
