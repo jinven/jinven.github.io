@@ -1156,11 +1156,13 @@ pre .javascript .function {
   right: 0;
   top: 0;
   z-index: 1000;
+  animation: fills 30s ease-in-out infinite;
+  animation-direction: alternate;
 }
 @media (max-width: 991px) {
   .github-corner svg {
     color: #222;
-    fill: #fff;
+    fill: #333;
   }
   .github-corner .github-corner:hover .octo-arm {
     animation: none;
@@ -1211,6 +1213,146 @@ pre .javascript .function {
   }
   40%, 80% {
     transform: rotate(10deg);
+  }
+}
+@-moz-keyframes fills {
+  0% {
+    color: #fff;
+  }
+  10% {
+    color: #888;
+  }
+  20% {
+    color: #000;
+  }
+  30% {
+    color: #333;
+  }
+  40% {
+    color: #666;
+  }
+  50% {
+    color: #999;
+  }
+  60% {
+    color: #ccc;
+  }
+  70% {
+    color: #fff;
+  }
+  80% {
+    color: #aaa;
+  }
+  90% {
+    color: #555;
+  }
+  100% {
+    color: #ea8;
+  }
+}
+@-webkit-keyframes fills {
+  0% {
+    color: #fff;
+  }
+  10% {
+    color: #888;
+  }
+  20% {
+    color: #000;
+  }
+  30% {
+    color: #333;
+  }
+  40% {
+    color: #666;
+  }
+  50% {
+    color: #999;
+  }
+  60% {
+    color: #ccc;
+  }
+  70% {
+    color: #fff;
+  }
+  80% {
+    color: #aaa;
+  }
+  90% {
+    color: #555;
+  }
+  100% {
+    color: #ea8;
+  }
+}
+@-o-keyframes fills {
+  0% {
+    color: #fff;
+  }
+  10% {
+    color: #888;
+  }
+  20% {
+    color: #000;
+  }
+  30% {
+    color: #333;
+  }
+  40% {
+    color: #666;
+  }
+  50% {
+    color: #999;
+  }
+  60% {
+    color: #ccc;
+  }
+  70% {
+    color: #fff;
+  }
+  80% {
+    color: #aaa;
+  }
+  90% {
+    color: #555;
+  }
+  100% {
+    color: #ea8;
+  }
+}
+@keyframes fills {
+  0% {
+    color: #fff;
+  }
+  10% {
+    color: #888;
+  }
+  20% {
+    color: #000;
+  }
+  30% {
+    color: #333;
+  }
+  40% {
+    color: #666;
+  }
+  50% {
+    color: #999;
+  }
+  60% {
+    color: #ccc;
+  }
+  70% {
+    color: #fff;
+  }
+  80% {
+    color: #aaa;
+  }
+  90% {
+    color: #555;
+  }
+  100% {
+    color: #ea8;
   }
 }
 .sidebar {
@@ -1288,7 +1430,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #2ff5ff;
+  background: #86fe0a;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
